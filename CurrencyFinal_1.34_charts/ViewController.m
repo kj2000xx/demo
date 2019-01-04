@@ -47,7 +47,7 @@
     self.talbeView.translatesAutoresizingMaskIntoConstraints = YES;
     self.talbeView.estimatedRowHeight = 0;
 //    self.talbeView.rowHeight = UITableViewAutomaticDimension;
-    
+    //123
     
     
     self.collectionView.delegate = self ;
