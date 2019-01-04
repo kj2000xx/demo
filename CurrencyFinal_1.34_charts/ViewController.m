@@ -48,9 +48,6 @@
     self.talbeView.estimatedRowHeight = 0;
 //    self.talbeView.rowHeight = UITableViewAutomaticDimension;
     
-    //456
-    
-    
     self.collectionView.delegate = self ;
     self.collectionView.dataSource = self ;
     self.collectionView.translatesAutoresizingMaskIntoConstraints = YES;
