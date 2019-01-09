@@ -218,7 +218,7 @@
         
         NSMutableDictionary *historicalRate_Dic = [[self getHistoricalRate_Dic] mutableCopy];
         [historicalRate_Dic setObject:dayAndRate forKey:countryName];
-        NSLog(@"%@",historicalRate_Dic);
+        NSLog(@"historicalRate_Dic is %@",historicalRate_Dic);
         [[NSUserDefaults standardUserDefaults] setObject:historicalRate_Dic forKey:@"historicalRate_Dic"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
