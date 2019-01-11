@@ -33,6 +33,7 @@
 
 @property(nonatomic)NSMutableDictionary *collectionOptionTitleDict;
 
+@property(nonatomic)NSString *optionHeaderStr;
 //@property(nonatomic)UIActivityIndicatorView *loadingView;
 @end
 
@@ -55,10 +56,11 @@
     self.userKeyIn_Arr = [NSArray new];
     self.favorListName_Arr = [NSMutableArray new];
     self.favorListRate_Dic =[NSMutableDictionary new];
+    self.collectionOptionTitleDict = [NSMutableDictionary new];
+    self.optionHeaderStr = [NSString new];
     
-    _favorListName_Arr = [self getUserFavorListName_Arr];
-    
-    _collectionOptionTitleDict = [NSMutableDictionary new];
+    self.favorListName_Arr = [self getUserFavorListName_Arr];
+    self.optionHeaderStr = [self getOptionHeaderStr];
     
     YahooCurrencyRateLoader *yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
     [yahooCurrencyRateLoader loadYahooCurrency];
@@ -98,7 +100,8 @@
                              @"CNY":@"人民幣",@"TWD":@"台幣",
                              };
     
-    //    [self renewHistoricalRateByFavorListCountryName];
+    //更新歷史匯率
+    [self renewHistoricalRateByFavorListCountryName];
     
     /*
     //loading圖示
@@ -268,9 +271,8 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self->_collectionView reloadData];
-        
-    });
     
+    });
     //    [_collectionView.collectionViewLayout invalidateLayout];
     //    [_collectionView layoutSubviews];
 }
@@ -337,6 +339,25 @@
     
 }
 
+//get optionHeaderStr
+-(NSString*)getOptionHeaderStr{
+    NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
+    
+    NSString *rangeForURL_str = [NSString new];
+    rangeForURL_str = [defaults objectForKey:@"rangeForURL_str"];
+    
+    __block NSString *optionHeaderStr = [NSString new];
+    NSDictionary *dayToRange_Dic =[NSDictionary new];
+    dayToRange_Dic = @{@"7天":@"7d",@"1月":@"1mo",@"6月":@"6mo",@"1年":@"1y"};
+    
+    [dayToRange_Dic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        if ([obj isEqualToString:rangeForURL_str]) {
+            optionHeaderStr = key;
+        }
+    }];
+    
+    return optionHeaderStr;
+}
 
 #pragma mark tableView dataSource
 
@@ -467,12 +488,20 @@
     //處理天數選項的顯示
     cell.optioneTableViewController.row = indexPath.row;
     
+    /*每個content的optionHeader不同時使用
     if (_collectionOptionTitleDict[@(indexPath.row)]) {
         
         [cell.optioneTableViewController updateOptionHeader:_collectionOptionTitleDict[@(indexPath.row)]];
     }else{
         [cell.optioneTableViewController updateOptionHeader:@"1天"];
     }
+     */
+    if (_optionHeaderStr) {
+        [cell.optioneTableViewController updateOptionHeader:_optionHeaderStr];
+    }else{
+        [cell.optioneTableViewController updateOptionHeader:@"1天"];
+    }
+    
     [cell.optionTableView reloadData];
     
     

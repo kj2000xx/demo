@@ -169,7 +169,6 @@
 
 -(void)loadYahooHistoricalDataNew:(NSString*)countryName keyInCountry:(NSString*)userKeyInCountry{
     
-    
     NSDictionary *interval_dic =[NSDictionary new];
     interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1mo",@"1y":@"1mo"};
     
