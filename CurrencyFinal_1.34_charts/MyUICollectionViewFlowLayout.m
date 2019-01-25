@@ -18,7 +18,6 @@
 {
     [super prepareLayout];
     
-    
     //初始化
     self.itemSize = CGSizeMake(370, 247);
     self.scrollDirection = UICollectionViewScrollDirectionHorizontal;

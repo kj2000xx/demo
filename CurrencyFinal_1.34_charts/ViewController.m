@@ -264,9 +264,12 @@
 
 //更新天數option按鈕數字
 -(void)renewOptionHeader:(NSNotification*)header{
-    
+    /*每個cell天數不同時使用
     NSString *row = header.userInfo[@"row"];
     _collectionOptionTitleDict[row] = header.userInfo[@"header"];
+     */
+    
+    _optionHeaderStr = header.userInfo[@"header"];
     [self renewHistoricalRateByFavorListCountryName];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -479,6 +482,7 @@
     NSString *imageName = [[NSString alloc] initWithFormat:@"%@.png",countryName ];
     UIImage *image = [UIImage imageNamed:imageName];
     cell.flagForLabel.image = image ;
+    cell.countryNameStr = countryName;
     
     /*
      NSArray *userKeyIn_Arr = [self getUserKeyIn_Arr];
@@ -499,11 +503,14 @@
     if (_optionHeaderStr) {
         [cell.optioneTableViewController updateOptionHeader:_optionHeaderStr];
     }else{
-        [cell.optioneTableViewController updateOptionHeader:@"1天"];
+        [cell.optioneTableViewController updateOptionHeader:@"7天"];
     }
-    
-    [cell.optionTableView reloadData];
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [cell.optionTableView reloadData];
+        [cell setLineChartData];
+        [cell updateLineChartData];
+    });
     
     return cell;
 }

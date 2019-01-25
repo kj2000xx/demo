@@ -166,12 +166,12 @@
 
 
 #pragma loadYahooHistoricalRate
-
+//取得yahoo歷史匯率
 -(void)loadYahooHistoricalDataNew:(NSString*)countryName keyInCountry:(NSString*)userKeyInCountry{
     
     NSDictionary *interval_dic =[NSDictionary new];
-    interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1mo",@"1y":@"1mo"};
-    
+//    interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1mo",@"1y":@"1mo"};
+    interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1d",@"1y":@"1d"};
     NSString *range_str = [[NSUserDefaults standardUserDefaults] objectForKey:@"rangeForURL_str"];
     
     NSString *interval_str = [NSString new];
@@ -179,8 +179,7 @@
     
     NSString *yahooHistorical_5daysURL = [[NSString alloc] initWithFormat:@"https://query1.finance.yahoo.com/v7/finance/chart/USD%@=X?range=%@&interval=%@&indicators=quote&includeTimestamps=true&includePrePost=false&corsDomain=finance.yahoo.com",countryName,range_str,interval_str];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     
     NSURL *url = [NSURL URLWithString:yahooHistorical_5daysURL];
     NSError __autoreleasing *error;
@@ -222,7 +221,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
         
-    });
+//    });
 }
 
 
@@ -247,7 +246,9 @@
         //步驟二 使用NSFormatter在本地時區顯示epochTime
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
         //        [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-        [dateFormatter setDateFormat:@"MM/dd"];
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"]];
+//        [dateFormatter setCalendar:[ ];
+        [dateFormatter setDateFormat:@"YYYY年MM月dd日"];
         
         NSString *finalDate = [dateFormatter stringFromDate:epochNSDate];
         //        NSLog(@"最終轉換結果時間為 \"%@\"\n",finalDate);
