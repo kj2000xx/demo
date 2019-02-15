@@ -42,7 +42,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rj0-sJ-QZc" customClass="CustomTextField_NoMenu">
                                                     <rect key="frame" x="157" y="14" width="203" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NVP-q5-hHG">
                                                     <rect key="frame" x="329.5" y="36" width="30.5" height="15"/>
@@ -167,7 +167,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="TNx-hs-AAT">
                             <connections>
-                                <segue destination="MYb-3W-67F" kind="push" id="fsJ-Sr-TXe"/>
+                                <segue destination="MYb-3W-67F" kind="push" identifier="addListView" id="fsJ-Sr-TXe"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

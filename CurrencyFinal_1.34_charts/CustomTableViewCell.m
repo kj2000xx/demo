@@ -10,9 +10,7 @@
 #import "ViewController.h"
 
 @implementation CustomTableViewCell{
-    //NSArray *countryFlagStr;
     ViewController *vc;
-    
 }
 
 - (void)awakeFromNib {
@@ -29,87 +27,137 @@
     return YES;
 }
 
-
-
 #pragma mark change format for textfield's text input
+
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    NSLog(@" range location is  %lu\n  range length  is %lu\n",(unsigned long)range.location,(unsigned long)range.length);
-    //NSInteger strLength = textField.text.length - range.length + string.length;
-    //return (strLength <= 13);
-    NSString *cleanCentString = [[textField.text componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
-    NSInteger centValue = [cleanCentString intValue];
-    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-    NSNumber *myNumber = [f numberFromString:cleanCentString];
-    NSNumber *result;
+    //textField顯示用的格式
+    NSNumberFormatter *textDecimalStyleFormatter = [NSNumberFormatter new];
+    //    [textDecimalStyleFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    textDecimalStyleFormatter.usesGroupingSeparator = YES;
+    textDecimalStyleFormatter.groupingSize = 3;
+    textDecimalStyleFormatter.maximumFractionDigits = 4;
+    textDecimalStyleFormatter.roundingMode = NSNumberFormatterRoundDown;
     
-    if([textField.text length] < 26){
-        if (string.length > 0)
-        {
-            centValue = centValue * 10 + [string intValue];
-            double intermediate = [myNumber doubleValue] * 10 +  [[f numberFromString:string] doubleValue];
-            result = [[NSNumber alloc] initWithDouble:intermediate];
-        }
-        else
-        {
-            centValue = centValue / 10;
-            double intermediate = [myNumber doubleValue]/10;
-            result = [[NSNumber alloc] initWithDouble:intermediate];
-        }
+    //NSUserDefaults儲存用得格式
+    NSNumberFormatter *userDefaultDecimalFormatter = [NSNumberFormatter new];
+    //    [userDefaultDecimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [userDefaultDecimalFormatter setMaximumFractionDigits:4];
+    [userDefaultDecimalFormatter setUsesGroupingSeparator:NO];
+    
+    
+    if (range.length == 1) {//輸入刪除時
+        NSString *priceString = [self deleteLastCharacter:textField.text];
         
-        myNumber = result;
-        //NSLog(@"%ld ++++ %@", (long)centValue, myNumber);
-        NSNumber *formatedValue;
-        formatedValue = [[NSNumber alloc] initWithDouble:[myNumber doubleValue]/ 100.0f];
-        NSNumberFormatter *_currencyFormatter = [[NSNumberFormatter alloc] init];
-        [_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        //textField.text = [_currencyFormatter stringFromNumber:formatedValue];
-        NSString * price = [[_currencyFormatter stringFromNumber:formatedValue] substringFromIndex:1];
-        textField.text = price ;
+        //清除string內的所有符號才能轉成NSNumber
+        //        NSString *cleanCentString = [[priceString componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
         
-        // NSString *setPrice =[_currencyFormatter stringFromNumber:formatedValue];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *cleanCentString = [[priceString componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@","]] componentsJoinedByString:@""];
+        NSNumber *priceNumber = [textDecimalStyleFormatter numberFromString:cleanCentString];
+        priceString = [textDecimalStyleFormatter stringFromNumber:priceNumber];
         
-        //NSLog(@"VC.userFavorList_dic   is  %@",VC.userFavorList_dic);
-        //NSMutableArray *userKeyInfo = [[VC.userFavorList_dic objectForKey:@"cellKeyInInfo"] mutableCopy];
+        textField.text = priceString;
         
-        NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
-        [decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        [decimalFormatter setMaximumFractionDigits:2];
-        [decimalFormatter setUsesGroupingSeparator:NO];
         self.cell_userKeyInfo_arr[0]= self.cell_countryName.text;
-        self.cell_userKeyInfo_arr[1] = [decimalFormatter stringFromNumber:formatedValue];
-        
-        [defaults setObject:_cell_userKeyInfo_arr forKey:@"userKeyIn_Arr"];
-        NSLog(@"cell_keyInfo_arr  is    %@",_cell_userKeyInfo_arr);
-        
-        [defaults synchronize];
+        self.cell_userKeyInfo_arr[1] = [userDefaultDecimalFormatter stringFromNumber:priceNumber];
+        [self saveToUserKeyInArray];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCell" object:nil userInfo:@{@"index":self.indexName,@"cell":self}];
+        return NO;
+    }
+    if ([textField.text length] < 24) {//判斷是否超出長度
         
+        if ([string isEqualToString:@"."]) {//檢查有無重複輸入符號.
+            if ([textField.text containsString:@"."]) {
+                return NO;//重複輸入超過兩個"."不更改結果
+            }else{
+                
+                NSString *textFieldAppendString = textField.text;
+                
+                //清除string內的所有符號才能轉成NSNumber
+                //                NSString *cleanCentString = [[textFieldAppendString componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                NSString *cleanCentString = [[textFieldAppendString componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@","]] componentsJoinedByString:@""];
+                
+                NSNumber *priceNumber = [textDecimalStyleFormatter numberFromString:cleanCentString];
+                textFieldAppendString = [textDecimalStyleFormatter stringFromNumber:priceNumber];
+                
+                textField.text = [textFieldAppendString stringByAppendingString:string];
+                
+                self.cell_userKeyInfo_arr[0]= self.cell_countryName.text;
+                self.cell_userKeyInfo_arr[1] = [userDefaultDecimalFormatter stringFromNumber:priceNumber];
+                [self saveToUserKeyInArray];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCell" object:nil userInfo:@{@"index":self.indexName,@"cell":self}];
+                
+                return NO;
+            }
+        }
+        //輸入的不是"."不需檢查有無重複，直接直接更改字串結果
+        NSString *textFieldAppendString = [textField.text stringByAppendingString:string];
+        
+        //清除string內的所有符號才能轉成NSNumber
+        //        NSString *cleanCentString = [[textFieldAppendString componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+        NSString *cleanCentString = [[textFieldAppendString componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@","]] componentsJoinedByString:@""];
+        
+        NSNumber *priceNumber = [textDecimalStyleFormatter numberFromString:cleanCentString];
+        NSString *textFieldAppendStringForNoDot = [textDecimalStyleFormatter stringFromNumber:priceNumber];
+        
+        if ([textFieldAppendString containsString:@"."]) {
+            //限制小數點位數最多輸入四位
+            NSRange range = [textField.text rangeOfString:@"."];
+            NSUInteger dotLocation = range.location;
+            NSUInteger textLength = [textField.text length];
+            NSUInteger decimalPlace = textLength-(dotLocation+1);
+            if (decimalPlace >= 4) {
+                return NO;
+            }
+            
+            textField.text = textFieldAppendString;
+        }else{
+            textField.text = textFieldAppendStringForNoDot;
+        }
+        
+        self.cell_userKeyInfo_arr[0]= self.cell_countryName.text;
+        self.cell_userKeyInfo_arr[1] = [userDefaultDecimalFormatter stringFromNumber:priceNumber];
+        
+        [self saveToUserKeyInArray];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCell" object:nil userInfo:@{@"index":self.indexName,@"cell":self}];
         return NO;
         
+    }else{
+        return NO;//輸入字串超過設定的最大長度不更改
     }
-    else{
-        
-        //            NSNumberFormatter *_currencyFormatter = [[NSNumberFormatter alloc] init];
-        //            [_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyPluralStyle];
-        //            textField.text = [_currencyFormatter stringFromNumber:00];
-        //
-        //            UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Deposit Amount Limit"
-        //                                                           message: @"You've exceeded the deposit amount limit. Kindly re-input amount"
-        //                                                          delegate: self
-        //                                                 cancelButtonTitle:@"Cancel"
-        //                                                 otherButtonTitles:@"OK",nil];
-        //
-        // [alert show];
-        if(string.length > 0){
-            return NO;
-        }else{
-            return YES;
-        }
-    }
-    
 }
+
+//刪除最後一個字
+-(NSString*) deleteLastCharacter:(NSString*)sourceString
+{
+    NSString* retString;
+    if(0 == [sourceString length])
+    {
+        retString = sourceString;
+        
+    }
+    else if (1 == [sourceString length])
+    {
+        //        retString = [sourceString substringToIndex:([sourceString length]-1)];
+        retString = @"0";
+    }
+    else
+    {
+        retString = [sourceString substringToIndex:([sourceString length]-1)];
+    }
+    return retString;
+}
+
+//將輸入完的字存進UseKeyInArray
+-(void)saveToUserKeyInArray{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:_cell_userKeyInfo_arr forKey:@"userKeyIn_Arr"];
+    [defaults synchronize];
+    NSLog(@"cell_keyInfo_arr  is    %@",_cell_userKeyInfo_arr);
+}
+
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
     
@@ -125,11 +173,25 @@
     //NSString *currencyPrice =[NSString stringWithFormat:@"%.2f",keyValue*changeRate];
     
     NSNumberFormatter *formatter =[NSNumberFormatter new];
-    [formatter setMaximumFractionDigits:2];
-    [formatter setUsesGroupingSeparator:YES];
+    [formatter setMaximumFractionDigits:4];
+    //    [formatter setUsesGroupingSeparator:YES];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    formatter.roundingMode = NSNumberFormatterRoundDown;
     
-    NSString *currencyPrice  =[formatter stringFromNumber:[NSNumber numberWithFloat:keyValue*changeRate]];
+    
+    NSString *currencyPrice = [NSString new];
+    if (!changeRate) {
+        currencyPrice = [NSString stringWithFormat:@"%.4f",keyValue];
+        NSNumber *priceNumber = [formatter numberFromString:currencyPrice];
+        currencyPrice =[formatter stringFromNumber:priceNumber];
+        
+    }else{
+        currencyPrice = [NSString stringWithFormat:@"%.4f",(keyValue*changeRate)];
+        NSNumber *priceNumber = [formatter numberFromString:currencyPrice];
+        currencyPrice =[formatter stringFromNumber:priceNumber];
+        
+    }
+    
     
     //self.cell_currencyPrice.text = currencyPrice;
     self.cell_currencyUserKeyIn.text = currencyPrice;
@@ -143,6 +205,7 @@
     
     // Configure the view for the selected state
 }
+
 
 /*
  #pragma mark close keyboard

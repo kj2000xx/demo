@@ -65,7 +65,9 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         
-        cell.backgroundColor = [UIColor clearColor];
+//        cell.backgroundColor = [UIColor clearColor];//背景設定為透明色
+        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.3];
+        
         
         cell.textLabel.text = _optionHeader;
         return  cell;
@@ -78,8 +80,9 @@
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.textColor = [UIColor whiteColor];
         
-        cell.backgroundColor = [UIColor clearColor];
-        
+//        cell.backgroundColor = [UIColor clearColor];
+        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.5];
+
         cell.textLabel.text = _optionItem[indexPath.row-1];
         return  cell;
     }

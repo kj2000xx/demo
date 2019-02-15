@@ -11,7 +11,6 @@
 
 @interface MyCollectionViewCell()<ChartViewDelegate,UIGestureRecognizerDelegate>
 
-@property(nonatomic) UIView *legend;
 @property(nonatomic) UIImageView *backgroundGradientView;
 
 @property(nonatomic) BOOL isOpen;
@@ -41,7 +40,8 @@
 
     self.flagForLabel = [[UIImageView alloc] initWithFrame:CGRectMake(65, 10, 35, 35)];
     self.countryName_label = [[UILabel alloc] initWithFrame:CGRectMake(110, 10, 100, 40)];
-    _selectedPresntTimeAndPriceView.layer.cornerRadius = 7.0;
+    
+    _selectedPresntTimeAndPriceView.layer.cornerRadius = 7.0;//點選出現的label圓角設定
     
     [self addSubview:self.countryName_label];
     [self addSubview:self.flagForLabel];
@@ -55,11 +55,11 @@
     //設定歷史數據view的setting
     [self setLineChartViewSetting];
     
-    //添加天數按鈕上去
-    [self insertSubview:_optionTableView aboveSubview:_lineChartView];
-    //點擊顯示的資訊label移到最上層
+        //點擊顯示的資訊label移到最上層
     [self insertSubview:_selectedPresntTimeAndPriceView aboveSubview:_lineChartView];
-    
+    //添加天數按鈕上去
+    [self insertSubview:_optionTableView aboveSubview:_selectedPresntTimeAndPriceView];
+
     
     UILongPressGestureRecognizer *tapGest = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress)];
     tapGest.delegate = self;
@@ -173,9 +173,6 @@
     _lineChartView.xAxis.labelCount = xValsCount;
     _lineChartView.xAxis.forceLabelsEnabled = YES;
     _lineChartView.xAxis.avoidFirstLastClippingEnabled = TRUE;
-    
-    
-//    _lineChartView.xAxis.axisMaximum =
     
     
     for (int i =0 ; i < xValsCount; i++) {

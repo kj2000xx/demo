@@ -94,7 +94,7 @@
 
 
 #pragma loadYahooCurrency
-//取得yahoo即時匯率
+//取得yahoo即時匯率 存在favorListRate
 -(void)loadYahooCurrency{
     //取得使用者最後輸入的基準外幣名稱
     NSArray *userKeyIn_Arr = [NSArray new];
@@ -172,13 +172,21 @@
     NSDictionary *interval_dic =[NSDictionary new];
 //    interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1mo",@"1y":@"1mo"};
     interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1d",@"1y":@"1d"};
+    
     NSString *range_str = [[NSUserDefaults standardUserDefaults] objectForKey:@"rangeForURL_str"];
     
     NSString *interval_str = [NSString new];
     interval_str = interval_dic[range_str];
+    NSString *baseCountryName = @"USD";
+    NSString *yahooHistorical_5daysURL;
     
-    NSString *yahooHistorical_5daysURL = [[NSString alloc] initWithFormat:@"https://query1.finance.yahoo.com/v7/finance/chart/USD%@=X?range=%@&interval=%@&indicators=quote&includeTimestamps=true&includePrePost=false&corsDomain=finance.yahoo.com",countryName,range_str,interval_str];
-    
+    if ([baseCountryName isEqualToString:countryName]) {
+        NSString *specialCountryName = @"TWD";
+        yahooHistorical_5daysURL = [[NSString alloc] initWithFormat:@"https://query1.finance.yahoo.com/v7/finance/chart/%@%@=X?range=%@&interval=%@&indicators=quote&includeTimestamps=true&includePrePost=false&corsDomain=finance.yahoo.com",baseCountryName,specialCountryName,range_str,interval_str];
+
+    }else{
+        yahooHistorical_5daysURL = [[NSString alloc] initWithFormat:@"https://query1.finance.yahoo.com/v7/finance/chart/%@%@=X?range=%@&interval=%@&indicators=quote&includeTimestamps=true&includePrePost=false&corsDomain=finance.yahoo.com",baseCountryName,countryName,range_str,interval_str];
+    }
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     
     NSURL *url = [NSURL URLWithString:yahooHistorical_5daysURL];

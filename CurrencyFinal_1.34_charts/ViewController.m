@@ -34,6 +34,9 @@
 @property(nonatomic)NSMutableDictionary *collectionOptionTitleDict;
 
 @property(nonatomic)NSString *optionHeaderStr;
+
+@property(nonatomic)CustomTableViewCell *selectedCell;
+
 //@property(nonatomic)UIActivityIndicatorView *loadingView;
 @end
 
@@ -391,6 +394,8 @@
     cell.cell_userKeyInfo_arr = [userKeyInfo mutableCopy];
     NSString *setPrice = userKeyInfo[1];
     NSString *userRate = [self.favorListRate_Dic objectForKey:countryName];
+    
+   
     [cell showUserFavorList_price:setPrice rate:userRate];
     
     cell.indexName =indexPath;
@@ -401,13 +406,14 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CustomTableViewCell * cellVC2 = [tableView cellForRowAtIndexPath:indexPath];
-    
-    if ([cellVC2.cell_currencyUserKeyIn isFirstResponder]) {
+    _selectedCell  = [tableView cellForRowAtIndexPath:indexPath];
+    //取消鍵盤
+    if ([_selectedCell.cell_currencyUserKeyIn isFirstResponder]) {
         
-        [cellVC2.cell_currencyUserKeyIn resignFirstResponder];
+        [_selectedCell.cell_currencyUserKeyIn resignFirstResponder];
         
     }else{
+        //將歷史匯率移到所點選的國家
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
         [[[UIApplication sharedApplication]keyWindow]endEditing:YES];
         //[cellVC2.cell_currencyUserKeyIn becomeFirstResponder];
@@ -475,8 +481,13 @@
     
     //標示圖表的貨幣名稱
     [cell.countryName_label setTextColor:[UIColor whiteColor]];
-    NSString * nameAddUSD = [NSString stringWithFormat:@"%@ / USD",countryName];
-    cell.countryName_label.text =nameAddUSD;
+    if ([countryName isEqualToString:@"USD"]) {
+        NSString * nameAddTWD = [NSString stringWithFormat:@"%@ / TWD",countryName];
+        cell.countryName_label.text =nameAddTWD;
+    }else{
+        NSString * nameAddUSD = [NSString stringWithFormat:@"%@ / USD",countryName];
+        cell.countryName_label.text =nameAddUSD;
+    }
     
     //顯示圖表的貨幣國旗圖示
     NSString *imageName = [[NSString alloc] initWithFormat:@"%@.png",countryName ];
@@ -515,6 +526,13 @@
     return cell;
 }
 
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    //如果在鍵盤打開的情況之下，要先關閉鍵盤再跳到新增選單
+    if ([segue.identifier isEqualToString:@"addListView"]) {
+        [self.view endEditing:YES];
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
