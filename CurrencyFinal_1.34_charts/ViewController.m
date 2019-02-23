@@ -29,15 +29,15 @@
 
 @property(nonatomic) NSDictionary *currencyList_Dic ;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *menu_button;
-
 @property(nonatomic)NSMutableDictionary *collectionOptionTitleDict;
 
 @property(nonatomic)NSString *optionHeaderStr;
 
 @property(nonatomic)CustomTableViewCell *selectedCell;
 
-//@property(nonatomic)UIActivityIndicatorView *loadingView;
+@property(nonatomic)YahooCurrencyRateLoader *yahooCurrencyRateLoader;
+
+@property(nonatomic)UIActivityIndicatorView *loadingView;
 @end
 
 @implementation ViewController
@@ -65,12 +65,12 @@
     self.favorListName_Arr = [self getUserFavorListName_Arr];
     self.optionHeaderStr = [self getOptionHeaderStr];
     
-    YahooCurrencyRateLoader *yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
-    [yahooCurrencyRateLoader loadYahooCurrency];
+    _yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
+    [_yahooCurrencyRateLoader loadYahooCurrency];
     
     [self setNavigationBar];
     
-    //Navigation Bar put on logo.
+    //Navigation Bar put in logo.
     UIImage * titleImage = [UIImage imageNamed:@"title_moneyBag"];
     UIImageView *navigationImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     navigationImage.image = titleImage;
@@ -79,9 +79,11 @@
     [workaroundImageView addSubview:navigationImage];
     self.navigationItem.titleView = workaroundImageView ;
     
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    //self.collectionView.pagingEnabled = true ;
+    UIImage *menu_img = [self scaleImage:[UIImage imageNamed:@"menu3.png"] toScale:0.335];
     
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    self.editButtonItem.image = menu_img;
+
     //show path
     //        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
     //        NSLog(@"%@",path);
@@ -90,6 +92,7 @@
     self.tableViewFrameDefault = self.talbeView.frame;
     self.collectionViewCenterDefault = self.collectionView.center;
     
+    //用來比對英文國名撈出中文國名
     self.currencyList_Dic =@{
                              @"USD":@"美金",@"HKD":@"港幣",
                              @"GBP":@"英鎊",@"AUD":@"澳幣",
@@ -102,27 +105,22 @@
                              @"VND":@"越南盾",@"MYR":@"馬來幣",
                              @"CNY":@"人民幣",@"TWD":@"台幣",
                              };
+    //創建loadingView
+    [self creatLondingView];
     
     //更新歷史匯率
-    [self renewHistoricalRateByFavorListCountryName];
+    [self startLoadingView];
+    NSArray *countryNameArr = [[NSArray alloc] initWithArray:self.favorListName_Arr];
+    [_yahooCurrencyRateLoader loadYahooHistoricalDataNew:countryNameArr keyInCountry:nil];
     
-    /*
-    //loading圖示
-    _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
-    _loadingView.center = CGPointMake(self.collectionView.frame.size.width/2, self.collectionView.frame.size.height/2);
-    _loadingView.backgroundColor = [UIColor grayColor];
-    
-    _loadingView.alpha = 0.6;
-    [self.view addSubview:_loadingView];
-    */
-     
     //add notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCell:) name:@"reloadCell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:@"UIKeyboardWillShowNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillClose) name:@"UIKeyboardWillHideNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addCell:) name:@"addCell" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renewOptionHeader:) name:@"renewOptionHeader" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadCollectionView) name:@"completeLoadYhooHistoricalData" object:nil];
 }
 
 -(void)dealloc{
@@ -152,15 +150,43 @@
     
     
 }
-/*
+
+//更改uiimage比例
+- (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize{
+    
+    UIGraphicsBeginImageContext(CGSizeMake(image.size.width * scaleSize, image.size.height * scaleSize));
+    [image drawInRect:CGRectMake(0, 0, image.size.width * scaleSize, image.size.height * scaleSize)];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+    
+}
+
 #pragma mark Indicator startAnimating & stopAnimating
+-(void)creatLondingView{
+    //loading圖示
+    _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    _loadingView.center = CGPointMake(self.collectionView.frame.size.width/2, self.collectionView.frame.size.height/2);
+    _loadingView.frame = CGRectMake(self.collectionView.frame.origin.x+(self.collectionView.frame.size.width*1/19.5) , self.collectionView.frame.origin.y+0.1,self.collectionView.frame.size.width*9.5/10.5, self.collectionView.frame.size.height*16.5/17.5);
+    _loadingView.backgroundColor = [UIColor grayColor];
+    _loadingView.layer.cornerRadius = 10;
+    
+    
+    _loadingView.alpha = 0.5;
+    [self.view addSubview:_loadingView];
+}
+
+//開始loading動畫
 -(void)startLoadingView{
     [_loadingView startAnimating];
 }
+//結束loading動畫
 -(void)stopLoadingView{
     [_loadingView stopAnimating];
 }
-*/
+
 
 #pragma mark basic setting
 //設定透明與左按鈕
@@ -171,11 +197,6 @@
     //self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];//颜色
     //[[[self.navigationController.navigationBar subviews]objectAtIndex:0] setAlpha:0.1];//透明度
     
-    //Navigation Bar Left Button
-    UIImage* menu_img = [UIImage imageNamed:@"menu.png"] ;
-    UIImageView *btnImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-    btnImage.image = menu_img;
-    self.menu_button.customView = btnImage;
 }
 
 #pragma mark Notification's selector
@@ -185,8 +206,7 @@
     NSIndexPath *indexName = [notification.userInfo objectForKey:@"index"];
     CustomTableViewCell *cell = notification.userInfo[@"cell"];
     
-    YahooCurrencyRateLoader *yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
-    [yahooCurrencyRateLoader loadYahooCurrency];
+    [_yahooCurrencyRateLoader loadYahooCurrency];
     
     self.userKeyIn_Arr = [self getUserKeyIn_Arr];
     self.favorListRate_Dic =[self getFavoritListRate_Dic];
@@ -245,10 +265,10 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
     dispatch_async(queue, ^{
+        NSArray *countryNameArr = [[NSArray alloc] initWithObjects:notification.userInfo[@"addCountryName"], nil];
         
-        YahooCurrencyRateLoader *yahooCurrencyRateLoader =[YahooCurrencyRateLoader new];
-        [yahooCurrencyRateLoader loadYahooCurrency];
-        [yahooCurrencyRateLoader loadYahooHistoricalDataNew:notification.userInfo[@"addCountryName"] keyInCountry:nil];
+        [self.yahooCurrencyRateLoader loadYahooCurrency];
+        [self.yahooCurrencyRateLoader loadYahooHistoricalDataNew:countryNameArr keyInCountry:nil];
         
         self.userKeyIn_Arr = [self getUserKeyIn_Arr];
         self.favorListRate_Dic = [self getFavoritListRate_Dic];
@@ -271,26 +291,26 @@
     NSString *row = header.userInfo[@"row"];
     _collectionOptionTitleDict[row] = header.userInfo[@"header"];
      */
+
+    [self.loadingView startAnimating];
     
     _optionHeaderStr = header.userInfo[@"header"];
-    [self renewHistoricalRateByFavorListCountryName];
+
+    NSArray *countryNameArr = [[NSArray alloc] initWithArray:self.favorListName_Arr];
+    [_yahooCurrencyRateLoader loadYahooHistoricalDataNew:countryNameArr keyInCountry:nil];
+
+    [self.collectionView reloadData];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self->_collectionView reloadData];
-    
-    });
     //    [_collectionView.collectionViewLayout invalidateLayout];
     //    [_collectionView layoutSubviews];
+
 }
 
-//更新使用者最愛清單的所有歷史匯率
--(void)renewHistoricalRateByFavorListCountryName{
-    
-    YahooCurrencyRateLoader *yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
-    for (int i = 0 ; i < self.favorListName_Arr.count; i++) {
-        [yahooCurrencyRateLoader loadYahooHistoricalDataNew:self.favorListName_Arr[i] keyInCountry:nil];
+-(void)reloadCollectionView{
+    [self.collectionView reloadData];
+    if (_loadingView.animating == TRUE) {
+        [_loadingView stopAnimating];
     }
-    
 }
 
 
@@ -437,7 +457,7 @@
                          withRowAnimation:UITableViewRowAnimationAutomatic];
         
         [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-        
+        [_yahooCurrencyRateLoader loadYahooHistoricalDataNew:self.favorListName_Arr keyInCountry:nil];
     }
     
 }
@@ -462,6 +482,7 @@
 -(void)setEditing:(BOOL)editing animated:(BOOL)animated{
     [super setEditing:editing animated:animated];
     [self.talbeView setEditing:editing animated:animated];
+    
 }
 
 #pragma mark collectionView dataSource
@@ -526,6 +547,13 @@
     return cell;
 }
 
+- (IBAction)refreshBtn:(id)sender {
+    [_yahooCurrencyRateLoader loadYahooCurrency];
+    [self.talbeView reloadData];
+    
+    [self startLoadingView];
+    [_yahooCurrencyRateLoader loadYahooHistoricalDataNew:self.favorListName_Arr keyInCountry:nil];
+}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     //如果在鍵盤打開的情況之下，要先關閉鍵盤再跳到新增選單

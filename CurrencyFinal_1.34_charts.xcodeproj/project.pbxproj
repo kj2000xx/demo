@@ -287,6 +287,8 @@
 		34C0742C1CB3A581009BAFF9 /* line_chart.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C0742B1CB3A581009BAFF9 /* line_chart.png */; };
 		34C0742F1CB520C0009BAFF9 /* MyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C0742E1CB520C0009BAFF9 /* MyCollectionViewCell.m */; };
 		34C074331CB63BCC009BAFF9 /* MyUICollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C074321CB63BCC009BAFF9 /* MyUICollectionViewFlowLayout.m */; };
+		34C5192E22200A34002EDF57 /* menu3.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C5192D22200A34002EDF57 /* menu3.png */; };
+		34C5193022200E23002EDF57 /* menu4.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C5192F22200E22002EDF57 /* menu4.png */; };
 		34CF5D2220FF12A5008FF8A1 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CF5D1F20FF129A008FF8A1 /* Charts.framework */; };
 		34CF5D2320FF12A5008FF8A1 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34CF5D1F20FF129A008FF8A1 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34CF5DD62108979E008FF8A1 /* OptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CF5DD52108979E008FF8A1 /* OptionTableViewController.m */; };
@@ -623,6 +625,8 @@
 		34C0742E1CB520C0009BAFF9 /* MyCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectionViewCell.m; sourceTree = "<group>"; };
 		34C074311CB63BCC009BAFF9 /* MyUICollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUICollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		34C074321CB63BCC009BAFF9 /* MyUICollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUICollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		34C5192D22200A34002EDF57 /* menu3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu3.png; sourceTree = "<group>"; };
+		34C5192F22200E22002EDF57 /* menu4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu4.png; sourceTree = "<group>"; };
 		34CF5D1920FF129A008FF8A1 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Charts-4.0.0/Charts.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		34CF5DD42108979E008FF8A1 /* OptionTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptionTableViewController.h; sourceTree = "<group>"; };
 		34CF5DD52108979E008FF8A1 /* OptionTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OptionTableViewController.m; sourceTree = "<group>"; };
@@ -720,6 +724,8 @@
 			children = (
 				3404D8981CCF8C7A0099A160 /* menu.png */,
 				3404D8951CCF86410099A160 /* menu2.png */,
+				34C5192D22200A34002EDF57 /* menu3.png */,
+				34C5192F22200E22002EDF57 /* menu4.png */,
 				3404D8CA1CD0B35D0099A160 /* IDR.png */,
 				34655B861CC0D3CA00E8AF05 /* AUD.png */,
 				3404D8C21CD0B1290099A160 /* ZAR.png */,
@@ -1229,6 +1235,7 @@
 				348DC0561CB258CC00E483E0 /* pa.png in Resources */,
 				348DC0351CB258CC00E483E0 /* ly.png in Resources */,
 				348DBE9D1CB22F2900E483E0 /* aw_down.png in Resources */,
+				34C5193022200E23002EDF57 /* menu4.png in Resources */,
 				348DC0481CB258CC00E483E0 /* mx.png in Resources */,
 				3404D8C51CD0B1920099A160 /* SEK.png in Resources */,
 				348DC0761CB258CC00E483E0 /* sv.png in Resources */,
@@ -1328,6 +1335,7 @@
 				348DBE9E1CB22F2900E483E0 /* aw_up.png in Resources */,
 				348DC05C1CB258CC00E483E0 /* pl.png in Resources */,
 				348DC07A1CB258CC00E483E0 /* td.png in Resources */,
+				34C5192E22200A34002EDF57 /* menu3.png in Resources */,
 				348DC04B1CB258CC00E483E0 /* na.png in Resources */,
 				348DBFF21CB258CC00E483E0 /* ee.png in Resources */,
 				348DC00F1CB258CC00E483E0 /* hn.png in Resources */,
@@ -1485,7 +1493,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1533,7 +1541,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;

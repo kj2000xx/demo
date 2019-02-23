@@ -9,40 +9,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/ViewController.m"
-            timestampString = "571925135.546121"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "289"
-            endingLineNumber = "289"
-            landmarkName = "-renewHistoricalRateByFavorListCountryName"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
-            timestampString = "571925135.5466681"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "CurrencyFinal_1.34_charts/MyCollectionViewCell.m"
-            timestampString = "571925135.547063"
+            timestampString = "572578782.228264"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "173"
@@ -58,23 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CurrencyFinal_1.34_charts/MyCollectionViewCell.m"
-            timestampString = "571925135.5474221"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
-            landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/MyCollectionViewCell.m"
-            timestampString = "571925135.547714"
+            timestampString = "572578782.228983"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "182"
@@ -89,29 +41,45 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
-            timestampString = "571925135.547992"
+            filePath = "CurrencyFinal_1.34_charts/CustomTableViewCell.m"
+            timestampString = "572499250.930752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "-textField:shouldChangeCharactersInRange:replacementString:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/CustomTableViewCell.m"
-            timestampString = "571925135.548282"
+            filePath = "CurrencyFinal_1.34_charts/ViewController.m"
+            timestampString = "572578782.229314"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "-textField:shouldChangeCharactersInRange:replacementString:"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
+            landmarkName = "-renewOptionHeader:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
+            timestampString = "572578782.229826"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
+            landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

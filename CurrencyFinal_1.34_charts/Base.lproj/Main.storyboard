@@ -162,18 +162,21 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="H6v-Yw-kIx">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="EeV-l5-ch5">
-                            <inset key="imageInsets" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="TNx-hs-AAT">
-                            <connections>
-                                <segue destination="MYb-3W-67F" kind="push" identifier="addListView" id="fsJ-Sr-TXe"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="TNx-hs-AAT">
+                                <connections>
+                                    <segue destination="MYb-3W-67F" kind="push" identifier="addListView" id="fsJ-Sr-TXe"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="refresh" id="jlv-h0-H48">
+                                <connections>
+                                    <action selector="refreshBtn:" destination="BYZ-38-t0r" id="A3G-fh-lRT"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="LJY-16-6HM" id="2Xv-CL-RSa"/>
-                        <outlet property="menu_button" destination="EeV-l5-ch5" id="5Yu-DR-wfg"/>
                         <outlet property="talbeView" destination="Efq-D1-xwz" id="x5f-vw-FjH"/>
                     </connections>
                 </viewController>

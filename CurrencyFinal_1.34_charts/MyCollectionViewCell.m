@@ -336,12 +336,7 @@
     _selectedPresntTimeAndPriceView.hidden = false;
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(delayMethod) object:nil];
-    [self performSelector:@selector(delayMethod) withObject:nil afterDelay:5.0];
-    
-    
-//    NSLog(@"點擊歷史訊息  entry==%@ /n hightlight is%@",entry,highlight);
-//
-//    NSLog(@"test get.....%@",NSStringFromCGPoint([chartView getMarkerPositionWithHighlight:highlight]));
+    [self performSelector:@selector(delayMethod) withObject:nil afterDelay:3.0];
     
     
 }
@@ -415,42 +410,5 @@
  return dateStr;
  
  }
- 
- #pragma mark epochTimeTranslate
- //將輸入的epochtime轉成希望的時間格式
- -(NSMutableArray*)epochTimetranslate:(NSArray*) fivedayTimesArray{
- NSMutableArray *transedFivedayTimesArray = [NSMutableArray new];
- 
- for (int i = 0; i <= fivedayTimesArray.count-1; i++) {
- //顯示字串是1970年以來的秒數
- //NSString *epochTime = @"1500850800";
- 
- NSString *epochTime = fivedayTimesArray[i];
- //把 NSString 轉換成 NSinterval
- NSTimeInterval seconds = [epochTime doubleValue];
- 
- //步驟一 創建NSdate對象
- NSDate *epochNSDate = [[NSDate alloc] initWithTimeIntervalSince1970:seconds];
- //        NSLog(@"Epoch time \"%@\" 等於UTC \"%@\"",epochTime,epochNSDate);
- 
- //步驟二 使用NSFormatter在本地時區顯示epochTime
- NSDateFormatter *dateFormatter = [NSDateFormatter new];
- //        [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
- [dateFormatter setDateFormat:@"MM/dd"];
- 
- NSString *finalDate = [dateFormatter stringFromDate:epochNSDate];
- //        NSLog(@"最終轉換結果時間為 \"%@\"\n",finalDate);
- 
- //順便顯示當地時區
- //        NSString *currentTimeZone = [[dateFormatter timeZone] abbreviation];
- //        NSLog(@"當地時區為 \"%@\"\n",currentTimeZone);
- 
- transedFivedayTimesArray[i] = finalDate;
- }
- NSLog(@"transedFivedayTimesArray is %@",fivedayTimesArray);
- return transedFivedayTimesArray;
- 
- }
- 
- */
+  */
 @end

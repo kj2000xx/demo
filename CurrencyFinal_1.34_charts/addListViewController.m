@@ -76,16 +76,27 @@
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     
     self.searchController.searchBar.delegate = self;
-    self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.searchResultsUpdater = self;
+
+    self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.hidesNavigationBarDuringPresentation = NO;
     
     
     self.searchController.searchBar.placeholder = @"請輸入貨幣名稱";
     self.searchController.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     
+//    self.tableView.contentInset = UIEdgeInsetsZero;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
     [self.searchController.searchBar sizeToFit];
-    self.tableView.tableHeaderView = self.searchController.searchBar;
+    
+//    self.navigationItem.searchController = self.searchController;
+
+//    self.tableView.tableHeaderView = self.searchController.searchBar;
+    if (@available(iOS 11.0, *)) {
+        self.navigationItem.searchController = self.searchController;
+    } else {
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+    }
     
 }
 
@@ -144,7 +155,7 @@
     
     cell.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
     
-    [UIView animateWithDuration:0.4 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
 
         cell.layer.transform = CATransform3DMakeTranslation(0, 0, 0);
      
@@ -154,18 +165,21 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     AddlistTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [self.searchController.searchBar removeFromSuperview];
-    self.searchController.hidesNavigationBarDuringPresentation = NO;
+    
     NSUserDefaults *userDefault =[NSUserDefaults standardUserDefaults];
     NSMutableArray *favorListName = [[userDefault objectForKey:@"favorListName_Arr"] mutableCopy];
     NSString *newListName = cell.eng_label.text;
     [favorListName addObject:newListName];
     [userDefault setObject:favorListName forKey:@"favorListName_Arr"];
+    [userDefault synchronize];
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"addCell" object:nil userInfo:@{@"addCountryName":newListName}];
 }
 
 #pragma mark searchBar
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
+    
     if (searchController.isActive) {
         NSString *searchString = searchController.searchBar.text;
         if ([searchString length]> 0) {

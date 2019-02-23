@@ -123,14 +123,15 @@
             [defaults synchronize];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [UIView animateWithDuration:0.05 animations:^{
+//                [UIView animateWithDuration:0.05 animations:^{
                     [tableView reloadData];
                     self->_tableFrame.size.height = tableView.contentSize.height;
                     tableView.frame = self->_tableFrame;
-                }];
+//                }];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"renewOptionHeader" object:nil userInfo:@{@"header":self->_optionItem[indexPath.row-1],@"row":@(self.row)}];
             });
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"renewOptionHeader" object:nil userInfo:@{@"header":self->_optionItem[indexPath.row-1],@"row":@(self.row)}];
+            
             
         }
         

@@ -11,6 +11,6 @@
 @interface YahooCurrencyRateLoader : NSObject
 
 -(void)loadYahooCurrency;
--(void)loadYahooHistoricalDataNew:(NSString*)countryName keyInCountry:(NSString*)userKeyInCountry;
+-(void)loadYahooHistoricalDataNew:(NSArray*)countryNameArr keyInCountry:(NSString*)userKeyInCountry;
 
 @end
