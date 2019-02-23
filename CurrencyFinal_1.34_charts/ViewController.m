@@ -79,7 +79,7 @@
     [workaroundImageView addSubview:navigationImage];
     self.navigationItem.titleView = workaroundImageView ;
     
-    UIImage *menu_img = [self scaleImage:[UIImage imageNamed:@"menu3.png"] toScale:0.335];
+    UIImage *menu_img = [self scaleImage:[UIImage imageNamed:@"menu4.png"] toScale:0.335];
     
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.editButtonItem.image = menu_img;
