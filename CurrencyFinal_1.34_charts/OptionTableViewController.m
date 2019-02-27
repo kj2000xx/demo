@@ -21,6 +21,7 @@
         _isOpen = false;
         _optionHeader = @"7天";
         _optionItem = @[@"7天",@"1月",@"6月",@"1年"];
+        
     }
     return self;
 }

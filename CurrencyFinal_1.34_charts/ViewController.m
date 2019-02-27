@@ -65,6 +65,8 @@
     self.favorListName_Arr = [self getUserFavorListName_Arr];
     self.optionHeaderStr = [self getOptionHeaderStr];
     
+    [self setRangeForURL_str];
+    
     _yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
     [_yahooCurrencyRateLoader loadYahooCurrency];
     
@@ -115,12 +117,7 @@
     
     
     //add notification
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCell:) name:@"reloadCell" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:@"UIKeyboardWillShowNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillClose) name:@"UIKeyboardWillHideNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addCell:) name:@"addCell" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renewOptionHeader:) name:@"renewOptionHeader" object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadCollectionView) name:@"completeLoadYhooHistoricalData" object:nil];
+    [self addNotifiCation];
 }
 
 -(void)dealloc{
@@ -198,7 +195,19 @@
     //[[[self.navigationController.navigationBar subviews]objectAtIndex:0] setAlpha:0.1];//透明度
     
 }
-
+-(void)addNotifiCation{
+    //輸入金額時觸發其他cell更新
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCell:) name:@"reloadCell" object:nil];
+    //鍵盤出現與消失時自動觸發的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:@"UIKeyboardWillShowNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillClose) name:@"UIKeyboardWillHideNotification" object:nil];
+    //增加國家時添加cell
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addCell:) name:@"addCell" object:nil];
+    //選擇歷史數據按鈕的期間後，更新按鈕顯示日期
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renewOptionHeader:) name:@"renewOptionHeader" object:nil];
+    //所有外幣歷史數據完成時回穿的通知，主要是要關閉loading動畫
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadCollectionView) name:@"completeLoadYhooHistoricalData" object:nil];
+}
 #pragma mark Notification's selector
 -(void)reloadCell:(NSNotification*)notification{
     //    NSLog(@"Reload Celling");
@@ -360,9 +369,16 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *favorListRate_Dic = [NSMutableDictionary new];
     favorListRate_Dic = [defaults objectForKey:@"favorListRate_Dic"];
-    
+    [defaults synchronize];
     return favorListRate_Dic;
     
+}
+
+//set rangeForURL_str
+-(void)setRangeForURL_str{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@"7d" forKey:@"rangeForURL_str"];
+    [defaults synchronize];
 }
 
 //get optionHeaderStr

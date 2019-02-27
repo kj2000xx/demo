@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CurrencyFinal_1.34_charts/ViewController.m"
-            timestampString = "572666043.375757"
+            timestampString = "572966263.052135"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "298"
-            endingLineNumber = "298"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
             landmarkName = "-renewOptionHeader:"
             landmarkType = "7">
          </BreakpointContent>
@@ -70,15 +70,31 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
-            timestampString = "572666043.376349"
+            timestampString = "572966263.052583"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
+            timestampString = "572966263.0531681"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
             landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
             landmarkType = "7">
          </BreakpointContent>
