@@ -17,7 +17,8 @@
 @property(nonatomic) UIImageView *flagForLabel;
 @property(nonatomic) NSString *countryNameStr;
 
-@property(nonatomic) LineChartView *lineChartView;
+//@property(nonatomic) LineChartView *lineChartView;
+@property (weak, nonatomic) IBOutlet LineChartView *lineChartView;
 @property(nonatomic) LineChartData *lineChartData;
 
 @property(nonatomic) NSString *tableTitleHeader;

@@ -11,7 +11,7 @@
 
 @interface MyCollectionViewCell()<ChartViewDelegate,UIGestureRecognizerDelegate>
 
-@property(nonatomic) UIImageView *backgroundGradientView;
+
 
 @property(nonatomic) BOOL isOpen;
 @property(nonatomic) NSArray *optionItem;
@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView *selectedPresntTimeAndPriceView;
 @property (weak, nonatomic) IBOutlet UILabel *dateTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundGradientView;
 
 @property(nonatomic) UIGestureRecognizer *gest;
 
@@ -32,14 +33,15 @@
 
 -(void)awakeFromNib{
     [super awakeFromNib];
+    
     //舊的建立pnchart圖表
 //     self.lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(self.frame.origin.x+10,self.frame.origin.y+25, self.frame.size.width-20, self.frame.size.height-40)];
     
     //創建漸層色背景
     [self creatBackgroundGradientImageView];
-
-    self.flagForLabel = [[UIImageView alloc] initWithFrame:CGRectMake(65, 10, 35, 35)];
-    self.countryName_label = [[UILabel alloc] initWithFrame:CGRectMake(110, 10, 100, 40)];
+    
+    self.flagForLabel = [[UIImageView alloc] initWithFrame:CGRectMake(65, 15, 35, 35)];
+    self.countryName_label = [[UILabel alloc] initWithFrame:CGRectMake(110, 12, 100, 40)];
     
     _selectedPresntTimeAndPriceView.layer.cornerRadius = 7.0;//點選出現的label圓角設定
     
@@ -50,35 +52,26 @@
     [self setOptionTableViewSet];
     
     //創建歷史數據view
-    [self creatLineChartView];
+    //改用storyboard配合autolayout
     
     //設定歷史數據view的setting
     [self setLineChartViewSetting];
     
         //點擊顯示的資訊label移到最上層
-    [self insertSubview:_selectedPresntTimeAndPriceView aboveSubview:_lineChartView];
+//    [self insertSubview:_selectedPresntTimeAndPriceView aboveSubview:_lineChartView];
     //添加天數按鈕上去
-    [self insertSubview:_optionTableView aboveSubview:_selectedPresntTimeAndPriceView];
+//    [self insertSubview:_optionTableView aboveSubview:_selectedPresntTimeAndPriceView];
 
     
     UILongPressGestureRecognizer *tapGest = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress)];
     tapGest.delegate = self;
     
     [self.lineChartView addGestureRecognizer:tapGest];
+    
 }
 
 
 #pragma mark creatLineChartView
--(void)creatLineChartView{
-    //設定view的大小
-    float ratio = (float)4/5;
-    
-    _lineChartView =[[LineChartView alloc] initWithFrame:CGRectMake(_backgroundGradientView.frame.origin.x, _backgroundGradientView.frame.origin.y+_backgroundGradientView.frame.size.height*(1-ratio), _backgroundGradientView.frame.size.width, _backgroundGradientView.frame.size.height*ratio)];
-    
-    [self addSubview:_lineChartView];
-    
-}
-
 
 -(void)setLineChartViewSetting{
     
@@ -187,7 +180,7 @@
     _lineChartView.xAxis.valueFormatter = [[ChartIndexAxisValueFormatter alloc] initWithValues:xVals];
     
     //設定y軸資料
-    //假資料
+    //假資料範例
 //    NSMutableArray *yVals = [NSMutableArray new];
 //    NSArray *tempYvals = @[@"0.3012",@"0.3123",@"0.3234",@"0.3456",@"0.2667"];
 //    //    NSArray *tempYvals = @[@0.3012,@0.3123,@0.3234,@0.33456,@0.3567];
@@ -260,7 +253,6 @@
 #pragma mark setTableView's properties
 -(void)setOptionTableViewSet{
         _optioneTableViewController = [OptionTableViewController new];
-
         _optionTableView.delegate = _optioneTableViewController;
         _optionTableView.dataSource = _optioneTableViewController;
 
@@ -271,8 +263,6 @@
         _optionTableView.layer.cornerRadius = 9;
         _optionTableView.backgroundColor= [UIColor clearColor];
         _optionTableView.estimatedRowHeight = 0;
-
-        _optioneTableViewController.tableFrame = _optionTableView.frame;
 
 }
 
@@ -294,10 +284,11 @@
     //製作漸層顏色模型
     CGGradientRef gradient = CGGradientCreateWithColorComponents(rgb, components, locations, count);
     CGColorSpaceRelease(rgb);
-    //製作ImageView
-    _backgroundGradientView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.origin.x+(self.frame.size.width*1/20) , self.frame.origin.y,self.frame.size.width*9/10, self.frame.size.height*17/18)];
+    
     //開始繪圖
+//    UIImage *backgroundView = [UIImage new];
     UIGraphicsBeginImageContext(_backgroundGradientView.frame.size);
+    
     //指定畫布
     CGContextRef context = UIGraphicsGetCurrentContext();
     //繪製漸層線條並儲存畫布
@@ -309,9 +300,7 @@
     UIGraphicsEndImageContext();
     //設定圓角
     _backgroundGradientView.layer.masksToBounds = YES ;
-    _backgroundGradientView.layer.cornerRadius = 10;
-    //將ImageView顯示於畫面
-    [self addSubview:_backgroundGradientView];
+    _backgroundGradientView.layer.cornerRadius = 15;
     
 }
 
@@ -331,10 +320,13 @@
     
     NSString *price = [formatter stringFromNumber:[NSNumber numberWithDouble:entry.y]];
     _priceLabel.text = price;
+    if (highlight.xPx+(_selectedPresntTimeAndPriceView.frame.size.width/2) > _lineChartView.frame.size.width) {
+        _selectedPresntTimeAndPriceView.center =CGPointMake(_lineChartView.frame.size.width-(_selectedPresntTimeAndPriceView.frame.size.width/2), _selectedPresntTimeAndPriceView.center.y);
+    }else{
+    _selectedPresntTimeAndPriceView.center =CGPointMake(highlight.xPx, _selectedPresntTimeAndPriceView.center.y);
     
-    _selectedPresntTimeAndPriceView.center =CGPointMake(highlight.xPx+9, _selectedPresntTimeAndPriceView.center.y);
+    }
     _selectedPresntTimeAndPriceView.hidden = false;
-    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(delayMethod) object:nil];
     [self performSelector:@selector(delayMethod) withObject:nil afterDelay:3.0];
     
@@ -379,6 +371,12 @@
 -(void)prepareForReuse{
     [super prepareForReuse];
     self.selectedPresntTimeAndPriceView.hidden = true;
+}
+
+- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+    return layoutAttributes;
 }
 /*
  #pragma mark load Yahoo historical rate

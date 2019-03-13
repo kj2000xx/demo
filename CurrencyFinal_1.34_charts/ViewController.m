@@ -42,19 +42,19 @@
 
 @implementation ViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
     self.talbeView.delegate = self ;
     self.talbeView.dataSource = self ;
-    self.talbeView.translatesAutoresizingMaskIntoConstraints = YES;
     self.talbeView.estimatedRowHeight = 62;
     self.talbeView.rowHeight = UITableViewAutomaticDimension;
     
     self.collectionView.delegate = self ;
     self.collectionView.dataSource = self ;
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = YES;
+
     
     self.userKeyIn_Arr = [NSArray new];
     self.favorListName_Arr = [NSMutableArray new];
@@ -81,8 +81,9 @@
     [workaroundImageView addSubview:navigationImage];
     self.navigationItem.titleView = workaroundImageView ;
     
-    UIImage *menu_img = [self scaleImage:[UIImage imageNamed:@"menu4.png"] toScale:0.335];
+//    UIImage *menu_img = [self scaleImage:[UIImage imageNamed:@"menu3.png"] toScale:0.07];
     
+    UIImage *menu_img = [self transImageSize:[UIImage imageNamed:@"menu3.png"] toWidth:25 toHeight:30];
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.editButtonItem.image = menu_img;
 
@@ -107,8 +108,6 @@
                              @"VND":@"越南盾",@"MYR":@"馬來幣",
                              @"CNY":@"人民幣",@"TWD":@"台幣",
                              };
-    //創建loadingView
-    [self creatLondingView];
     
     //更新歷史匯率
     [self startLoadingView];
@@ -160,15 +159,32 @@
     
 }
 
+- (UIImage *)transImageSize:(UIImage *)image toWidth:(float)width toHeight:(float)heigh{
+    
+    UIGraphicsBeginImageContext(CGSizeMake(width, heigh));
+    [image drawInRect:CGRectMake( 0, 3, width, heigh)];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+    
+}
+
+
 #pragma mark Indicator startAnimating & stopAnimating
 -(void)creatLondingView{
     //loading圖示
     _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.collectionView setNeedsLayout];
+    [self.collectionView layoutIfNeeded];
     
-    _loadingView.center = CGPointMake(self.collectionView.frame.size.width/2, self.collectionView.frame.size.height/2);
-    _loadingView.frame = CGRectMake(self.collectionView.frame.origin.x+(self.collectionView.frame.size.width*1/19.5) , self.collectionView.frame.origin.y+0.1,self.collectionView.frame.size.width*9.5/10.5, self.collectionView.frame.size.height*16.5/17.5);
+    _loadingView.center = CGPointMake(self.collectionView.frame.size.width/2, self.collectionView.frame.size.height/2+64);
+    _loadingView.frame = CGRectMake(self.collectionView.frame.origin.x+5 , self.collectionView.frame.origin.y+5,self.collectionView.frame.size.width-10, self.collectionView.frame.size.height-10);
+    
+//    _loadingView.frame.size = CGSizeMake(self.collectionView.frame.size.width-10, self.collectionView.frame.size.height-10);
+    
     _loadingView.backgroundColor = [UIColor grayColor];
-    _loadingView.layer.cornerRadius = 10;
+    _loadingView.layer.cornerRadius = 15;
     
     
     _loadingView.alpha = 0.5;
@@ -177,11 +193,16 @@
 
 //開始loading動畫
 -(void)startLoadingView{
+    if (!_loadingView) {
+        [self creatLondingView];
+    }
+    
     [_loadingView startAnimating];
 }
 //結束loading動畫
 -(void)stopLoadingView{
     [_loadingView stopAnimating];
+    
 }
 
 
@@ -301,7 +322,7 @@
     _collectionOptionTitleDict[row] = header.userInfo[@"header"];
      */
 
-    [self.loadingView startAnimating];
+    [self startLoadingView];
     
     _optionHeaderStr = header.userInfo[@"header"];
 
@@ -560,8 +581,54 @@
         [cell updateLineChartData];
     });
     
+    
     return cell;
 }
+
+-(UIImage *)creatCollectionCellBackgroundGradientImageView {
+    
+    //使用RGB顏色模型
+    CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
+    //漸層中所包含的關鍵顏色 RGBA
+    CGFloat components[] = {0.96, 0.31, 0.0, 0.55,
+        0.96, 0.31, 0.0, 0.7,
+        0.96, 0.31, 0.0, 0.85,
+        0.96, 0.31, 0.0, 1.0};
+    //關鍵顏色所出現的位置
+    CGFloat locations[] = {0.0, 0.33, 0.55, 1.0};
+    //關鍵顏色的個數
+    size_t count = 4;
+    //製作漸層顏色模型
+    CGGradientRef gradient = CGGradientCreateWithColorComponents(rgb, components, locations, count);
+    CGColorSpaceRelease(rgb);
+    
+    
+    //製作ImageView
+    UIImage *backgroundGradientView = [UIImage new];
+//    backgroundGradientView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,self.collectionView.frame.size.width, self.collectionView.frame.size.height)];
+    
+    
+    //開始繪圖
+//    UIGraphicsBeginImageContext(backgroundGradientView.frame.size);
+    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    UIGraphicsBeginImageContext(cell.contentView.frame.size);
+    //指定畫布
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    //繪製漸層線條並儲存畫布
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(0.0, 0.0), CGPointMake(0.0, self.collectionView.frame.size.height), 0);
+    CGContextSaveGState(context);
+    //將畫布指定給ImageView
+    backgroundGradientView = UIGraphicsGetImageFromCurrentImageContext();
+    //結束繪圖
+    UIGraphicsEndImageContext();
+    //設定圓角
+//    backgroundGradientView.layer.masksToBounds = YES ;
+//    backgroundGradientView.layer.cornerRadius = 15;
+    
+    return backgroundGradientView;
+    
+}
+
 
 - (IBAction)refreshBtn:(id)sender {
     [_yahooCurrencyRateLoader loadYahooCurrency];

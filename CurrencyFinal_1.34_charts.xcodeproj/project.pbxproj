@@ -33,6 +33,7 @@
 		34655B971CC0D3CA00E8AF05 /* USD.png in Resources */ = {isa = PBXBuildFile; fileRef = 34655B8E1CC0D3CA00E8AF05 /* USD.png */; };
 		34655B991CC0D49A00E8AF05 /* JPY.png in Resources */ = {isa = PBXBuildFile; fileRef = 34655B981CC0D49A00E8AF05 /* JPY.png */; };
 		34655BD41CC7534200E8AF05 /* CustomTextField_NoMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 34655BD31CC7534200E8AF05 /* CustomTextField_NoMenu.m */; };
+		346B6BBA2238B26700A1D2AC /* menu3.png in Resources */ = {isa = PBXBuildFile; fileRef = 346B6BB82238B26700A1D2AC /* menu3.png */; };
 		3472906920F38F0100303270 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3472906720F38F0100303270 /* Charts.swift */; };
 		348DBE711CB210FF00E483E0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 348DBE701CB210FF00E483E0 /* main.m */; };
 		348DBE741CB210FF00E483E0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 348DBE731CB210FF00E483E0 /* AppDelegate.m */; };
@@ -362,6 +363,7 @@
 		34655B981CC0D49A00E8AF05 /* JPY.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = JPY.png; path = flag_test_9pic/JPY.png; sourceTree = "<group>"; };
 		34655BD21CC7534200E8AF05 /* CustomTextField_NoMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextField_NoMenu.h; sourceTree = "<group>"; };
 		34655BD31CC7534200E8AF05 /* CustomTextField_NoMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTextField_NoMenu.m; sourceTree = "<group>"; };
+		346B6BB82238B26700A1D2AC /* menu3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu3.png; sourceTree = "<group>"; };
 		3472906720F38F0100303270 /* Charts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 		3472906820F38F0100303270 /* CurrencyFinal_1.34_charts-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CurrencyFinal_1.34_charts-Bridging-Header.h"; sourceTree = "<group>"; };
 		348DBE6C1CB210FF00E483E0 /* CurrencyFinal_1.34_charts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyFinal_1.34_charts.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -721,6 +723,7 @@
 			isa = PBXGroup;
 			children = (
 				3404D8981CCF8C7A0099A160 /* menu.png */,
+				346B6BB82238B26700A1D2AC /* menu3.png */,
 				3404D8951CCF86410099A160 /* menu2.png */,
 				34C5192F22200E22002EDF57 /* menu4.png */,
 				3404D8CA1CD0B35D0099A160 /* IDR.png */,
@@ -1370,6 +1373,7 @@
 				348DBFD81CB258CC00E483E0 /* bw.png in Resources */,
 				348DBFE51CB258CC00E483E0 /* co.png in Resources */,
 				348DC0751CB258CC00E483E0 /* st.png in Resources */,
+				346B6BBA2238B26700A1D2AC /* menu3.png in Resources */,
 				348DC01B1CB258CC00E483E0 /* it.png in Resources */,
 				3404D8C31CD0B1290099A160 /* ZAR.png in Resources */,
 				348DBE7A1CB210FF00E483E0 /* Main.storyboard in Resources */,

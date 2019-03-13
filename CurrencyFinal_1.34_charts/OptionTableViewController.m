@@ -36,7 +36,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 25;
+    return 35;
     
 }
 
@@ -67,7 +67,7 @@
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         
 //        cell.backgroundColor = [UIColor clearColor];//背景設定為透明色
-        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.3];
+        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.1];
         
         
         cell.textLabel.text = _optionHeader;
@@ -81,7 +81,7 @@
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.textColor = [UIColor whiteColor];
         
-//        cell.backgroundColor = [UIColor clearColor];
+        cell.backgroundColor = [UIColor clearColor];
         cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.5];
 
         cell.textLabel.text = _optionItem[indexPath.row-1];
@@ -95,6 +95,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (_isOpen == false ) {
         _isOpen = true;
+        self.tableFrame = tableView.frame;
         dispatch_async(dispatch_get_main_queue(), ^{
             [tableView reloadSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationAutomatic ];
             [UIView animateWithDuration:0.25 animations:^{

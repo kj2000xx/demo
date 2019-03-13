@@ -8,7 +8,7 @@
 
 #import "MyUICollectionViewFlowLayout.h"
 
-    CGFloat ItemHW = 320;
+//    CGFloat ItemHW = 320;
     CGFloat ItemMaigin = 0;
 
 
@@ -19,17 +19,19 @@
     [super prepareLayout];
     
     //初始化
-    self.itemSize = CGSizeMake(370, 247);
+//    self.estimatedItemSize = CGSizeMake(self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+//    self.itemSize = CGSizeMake(self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);//247
+    self.itemSize = self.collectionView.bounds.size;
     self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.minimumLineSpacing = ItemMaigin;
     CGFloat inset = ItemMaigin;
     //CGFloat inset = (self.collectionView.frame.size.width - ItemHW) / 2;
     self.sectionInset = UIEdgeInsetsMake(0, inset, 0, inset);
+
 }
 
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
-{
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity{
     //1.计算scrollview最后停留的范围
     CGRect lastRect ;
     lastRect.origin = proposedContentOffset;
@@ -62,4 +64,6 @@
 {
     return YES;
 }
+
+
 @end
