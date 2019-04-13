@@ -164,6 +164,7 @@
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:favorListRate_Dic forKey:@"favorListRate_Dic" ];
             
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"completeLoadYahooFavorListRate" object:nil];
         } else {
             NSLog(@"即時匯率取的失敗 %@",error);
         }
@@ -174,79 +175,6 @@
 
 #pragma loadYahooHistoricalRate
 //取得yahoo歷史匯率
-/*
- //old version
- -(void)loadYahooHistoricalDataNew:(NSString*)countryName keyInCountry:(NSString*)userKeyInCountry{
- //    loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
- //    loadingView.backgroundColor = [UIColor blackColor];
- //    loadingView.frame = CGRectMake(20, 20, 400, 400);
- //    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
- //    [window addSubview:loadingView];
- //    [loadingView startAnimating];
- 
- NSDictionary *interval_dic =[NSDictionary new];
- //    interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1mo",@"1y":@"1mo"};
- interval_dic = @{@"1d":@"90m",@"7d":@"1d",@"1mo":@"1d",@"6mo":@"1d",@"1y":@"1d"};
- 
- NSString *range_str = [[NSUserDefaults standardUserDefaults] objectForKey:@"rangeForURL_str"];
- 
- NSString *interval_str = [NSString new];
- interval_str = interval_dic[range_str];
- NSString *baseCountryName = @"USD";
- NSString *yahooHistorical_5daysURL;
- 
- if ([baseCountryName isEqualToString:countryName]) {
- NSString *specialCountryName = @"TWD";
- yahooHistorical_5daysURL = [[NSString alloc] initWithFormat:@"https://query1.finance.yahoo.com/v7/finance/chart/%@%@=X?range=%@&interval=%@&indicators=quote&includeTimestamps=true&includePrePost=false&corsDomain=finance.yahoo.com",baseCountryName,specialCountryName,range_str,interval_str];
- 
- }else{
- yahooHistorical_5daysURL = [[NSString alloc] initWithFormat:@"https://query1.finance.yahoo.com/v7/finance/chart/%@%@=X?range=%@&interval=%@&indicators=quote&includeTimestamps=true&includePrePost=false&corsDomain=finance.yahoo.com",baseCountryName,countryName,range_str,interval_str];
- }
- //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
- 
- NSURL *url = [NSURL URLWithString:yahooHistorical_5daysURL];
- NSError __autoreleasing *error;
- NSData *yahooData =[NSData dataWithContentsOfURL:url options:NSDataReadingUncached error:&error];
- if (error) {
- NSLog(@"取得%@歷史匯率失敗",countryName);
- }else{
- NSDictionary *jasonData = [NSJSONSerialization JSONObjectWithData:yahooData options:NSJSONReadingAllowFragments error:&error];
- 
- //        拆解jason
- NSDictionary *chart = [jasonData objectForKey:@"chart"];
- NSArray *result = [chart objectForKey:@"result"];
- NSDictionary *resultTransToDic = result[0];
- 
- //        timeStamp為最近五天時間，並利用epochTimeTranslate方法把epoch轉換成MM/dd格式
- NSArray *timeStamp = [resultTransToDic objectForKey:@"timestamp"];
- timeStamp = [self epochTimetranslate:timeStamp];
- NSDictionary *indicators = [resultTransToDic objectForKey:@"indicators"];
- 
- //        close為最近五天時間的匯率
- NSArray *quote = [indicators objectForKey:@"quote"];
- NSArray *close = [quote[0] objectForKey:@"close"];
- //        NSLog(@"close is %@",close);
- 
- //        把日期跟匯率組合成historicalRate的格式
- NSMutableArray *dayAndRate = [NSMutableArray new];
- for (int i = 0; i <= timeStamp.count-1 ; i++) {
- NSMutableArray *temp = [NSMutableArray new];
- temp[0] = timeStamp[i];
- temp[1] = close[i];
- 
- dayAndRate[i] = temp;
- }
- 
- NSMutableDictionary *historicalRate_Dic = [[self getHistoricalRate_Dic] mutableCopy];
- [historicalRate_Dic setObject:dayAndRate forKey:countryName];
- NSLog(@"historicalRate_Dic is %@",historicalRate_Dic);
- [[NSUserDefaults standardUserDefaults] setObject:historicalRate_Dic forKey:@"historicalRate_Dic"];
- [[NSUserDefaults standardUserDefaults] synchronize];
- }
- //    [loadingView stopAnimating];
- //    });
- }
- */
 
 -(void)loadYahooHistoricalDataNew:(NSArray*)countryNameArr keyInCountry:(NSString*)userKeyInCountry{
     
@@ -318,7 +246,9 @@
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 if (remainingTaskCount == 0) {
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"completeLoadYhooHistoricalData" object:nil];
+                        
                 }
                 
             } else {

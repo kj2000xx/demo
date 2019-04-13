@@ -22,14 +22,16 @@
         _optionHeader = @"7天";
         _optionItem = @[@"7天",@"1月",@"6月",@"1年"];
         
+        self.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.6];
+        
     }
     return self;
 }
 
 -(void)updateOptionHeader:(NSString *)newString{
-    if (self) {
+
         _optionHeader = newString;
-    }
+    
     
 }
 
@@ -65,9 +67,9 @@
         cell.textLabel.font = textLabelFont;
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        
+        cell.textLabel.backgroundColor = [UIColor clearColor];
 //        cell.backgroundColor = [UIColor clearColor];//背景設定為透明色
-        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.1];
+        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.6];
         
         
         cell.textLabel.text = _optionHeader;
@@ -80,9 +82,9 @@
         cell.textLabel.font = textLabelFont;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.textColor = [UIColor whiteColor];
-        
-        cell.backgroundColor = [UIColor clearColor];
-        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.5];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+
+        cell.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.6];
 
         cell.textLabel.text = _optionItem[indexPath.row-1];
         return  cell;

@@ -22,7 +22,7 @@ open class AxisBase: ComponentBase
     }
     
     /// Custom formatter that is used instead of the auto-formatter if set
-    private lazy var _axisValueFormatter: AxisValueFormatter = DefaultAxisValueFormatter(decimals: decimals)
+    private var _axisValueFormatter: IAxisValueFormatter?
     
     @objc open var labelFont = NSUIFont.systemFont(ofSize: 10.0)
     @objc open var labelTextColor = NSUIColor.black
@@ -143,7 +143,7 @@ open class AxisBase: ComponentBase
         return longest
     }
     
-    /// - returns: The formatted label at the specified index. This will either use the auto-formatter or the custom formatter (if one is set).
+    /// - Returns: The formatted label at the specified index. This will either use the auto-formatter or the custom formatter (if one is set).
     @objc open func getFormattedLabel(_ index: Int) -> String
     {
         if index < 0 || index >= entries.count
@@ -157,13 +157,14 @@ open class AxisBase: ComponentBase
     /// Sets the formatter to be used for formatting the axis labels.
     /// If no formatter is set, the chart will automatically determine a reasonable formatting (concerning decimals) for all the values that are drawn inside the chart.
     /// Use `nil` to use the formatter calculated by the chart.
-    @objc open var valueFormatter: AxisValueFormatter?
+    @objc open var valueFormatter: IAxisValueFormatter?
     {
         get
         {
-            if _axisValueFormatter is DefaultAxisValueFormatter,
-                (_axisValueFormatter as! DefaultAxisValueFormatter).hasAutoDecimals,
-                (_axisValueFormatter as! DefaultAxisValueFormatter).decimals != decimals
+            if _axisValueFormatter == nil ||
+                (_axisValueFormatter is DefaultAxisValueFormatter &&
+                    (_axisValueFormatter as! DefaultAxisValueFormatter).hasAutoDecimals &&
+                    (_axisValueFormatter as! DefaultAxisValueFormatter).decimals != decimals)
             {
                 _axisValueFormatter = DefaultAxisValueFormatter(decimals: decimals)
             }
@@ -219,7 +220,7 @@ open class AxisBase: ComponentBase
     
     /// The maximum number of labels on the axis
     @objc open var axisMaxLabels = Int(25) {
-        didSet { axisMinLabels = axisMaxLabels > 0 ? axisMaxLabels : oldValue }
+        didSet { axisMaxLabels = axisMaxLabels > 0 ? axisMaxLabels : oldValue }
     }
     
     /// the number of label entries the axis should have
@@ -248,7 +249,7 @@ open class AxisBase: ComponentBase
         forceLabelsEnabled = force
     }
     
-    /// - returns: `true` if focing the y-label count is enabled. Default: false
+    /// `true` if focing the y-label count is enabled. Default: false
     @objc open var isForceLabelsEnabled: Bool { return forceLabelsEnabled }
     
     /// Adds a new ChartLimitLine to this axis.
@@ -260,14 +261,8 @@ open class AxisBase: ComponentBase
     /// Removes the specified ChartLimitLine from the axis.
     @objc open func removeLimitLine(_ line: ChartLimitLine)
     {
-        for i in 0 ..< _limitLines.count
-        {
-            if _limitLines[i] === line
-            {
-                _limitLines.remove(at: i)
-                return
-            }
-        }
+        guard let i = _limitLines.firstIndex(of: line) else { return }
+        _limitLines.remove(at: i)
     }
     
     /// Removes all LimitLines from the axis.
@@ -276,7 +271,7 @@ open class AxisBase: ComponentBase
         _limitLines.removeAll(keepingCapacity: false)
     }
     
-    /// - returns: The LimitLines of this axis.
+    /// The LimitLines of this axis.
     @objc open var limitLines : [ChartLimitLine]
     {
         return _limitLines
@@ -335,8 +330,10 @@ open class AxisBase: ComponentBase
     }
     
     /// Calculates the minimum, maximum and range values of the YAxis with the given minimum and maximum values from the chart data.
-    /// - parameter dataMin: the y-min value according to chart data
-    /// - parameter dataMax: the y-max value according to chart
+    ///
+    /// - Parameters:
+    ///   - dataMin: the y-min value according to chart data
+    ///   - dataMax: the y-max value according to chart
     @objc open func calculate(min dataMin: Double, max dataMax: Double)
     {
         // if custom, use value as is, else use data value

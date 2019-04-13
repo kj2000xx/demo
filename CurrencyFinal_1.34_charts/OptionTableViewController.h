@@ -12,7 +12,7 @@
 
 @property(nonatomic) BOOL isOpen;
 @property(strong,nonatomic) NSArray *optionItem;
-@property(weak,nonatomic) NSString *optionHeader;
+@property(strong,nonatomic) NSString *optionHeader;
 @property(nonatomic) CGRect tableFrame;
 
 @property(nonatomic) NSInteger row;

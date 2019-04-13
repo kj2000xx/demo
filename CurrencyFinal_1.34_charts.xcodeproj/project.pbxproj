@@ -289,12 +289,19 @@
 		34C0742F1CB520C0009BAFF9 /* MyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C0742E1CB520C0009BAFF9 /* MyCollectionViewCell.m */; };
 		34C074331CB63BCC009BAFF9 /* MyUICollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C074321CB63BCC009BAFF9 /* MyUICollectionViewFlowLayout.m */; };
 		34C5193022200E23002EDF57 /* menu4.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C5192F22200E22002EDF57 /* menu4.png */; };
-		34CF5D2220FF12A5008FF8A1 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CF5D1F20FF129A008FF8A1 /* Charts.framework */; };
-		34CF5D2320FF12A5008FF8A1 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34CF5D1F20FF129A008FF8A1 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		34C7A711224A527D008A8D63 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CF5D1F20FF129A008FF8A1 /* Charts.framework */; };
+		34C7A712224A527D008A8D63 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34CF5D1F20FF129A008FF8A1 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34CF5DD62108979E008FF8A1 /* OptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CF5DD52108979E008FF8A1 /* OptionTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		34C7A713224A527D008A8D63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 34CF5D1920FF129A008FF8A1 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
+			remoteInfo = Charts;
+		};
 		34CF5D1E20FF129A008FF8A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 34CF5D1920FF129A008FF8A1 /* Charts.xcodeproj */;
@@ -309,23 +316,16 @@
 			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
 			remoteInfo = ChartsTests;
 		};
-		34CF5D2420FF12A5008FF8A1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 34CF5D1920FF129A008FF8A1 /* Charts.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A58A4ED274A941CA248EA921;
-			remoteInfo = Charts;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3472905D20F3576600303270 /* Embed Frameworks */ = {
+		34C7A715224A527D008A8D63 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				34CF5D2320FF12A5008FF8A1 /* Charts.framework in Embed Frameworks */,
+				34C7A712224A527D008A8D63 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -639,7 +639,7 @@
 			files = (
 				34A259DB1CCF1F6C0002BE89 /* QuartzCore.framework in Frameworks */,
 				34A259D91CCF1F5C0002BE89 /* CoreGraphics.framework in Frameworks */,
-				34CF5D2220FF12A5008FF8A1 /* Charts.framework in Frameworks */,
+				34C7A711224A527D008A8D63 /* Charts.framework in Frameworks */,
 				34A259D71CCF1F4E0002BE89 /* UIKit.framework in Frameworks */,
 				34A259D51CCF1F3F0002BE89 /* Foundation.framework in Frameworks */,
 			);
@@ -1050,12 +1050,12 @@
 				348DBE681CB210FF00E483E0 /* Sources */,
 				348DBE691CB210FF00E483E0 /* Frameworks */,
 				348DBE6A1CB210FF00E483E0 /* Resources */,
-				3472905D20F3576600303270 /* Embed Frameworks */,
+				34C7A715224A527D008A8D63 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				34CF5D2520FF12A5008FF8A1 /* PBXTargetDependency */,
+				34C7A714224A527D008A8D63 /* PBXTargetDependency */,
 			);
 			name = CurrencyFinal_1.34_charts;
 			productName = CurrencyFinal_1.34_charts;
@@ -1068,7 +1068,7 @@
 		348DBE641CB210FF00E483E0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Shane;
 				TargetAttributes = {
 					348DBE6B1CB210FF00E483E0 = {
@@ -1080,7 +1080,7 @@
 			};
 			buildConfigurationList = 348DBE671CB210FF00E483E0 /* Build configuration list for PBXProject "CurrencyFinal_1.34_charts" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -1419,10 +1419,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		34CF5D2520FF12A5008FF8A1 /* PBXTargetDependency */ = {
+		34C7A714224A527D008A8D63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Charts;
-			targetProxy = 34CF5D2420FF12A5008FF8A1 /* PBXContainerItemProxy */;
+			targetProxy = 34C7A713224A527D008A8D63 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1450,6 +1450,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -1504,6 +1505,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -1563,7 +1565,7 @@
 				PRODUCT_NAME = CurrencyFinal_1.34_charts;
 				SWIFT_OBJC_BRIDGING_HEADER = "CurrencyFinal_1.34_charts/CurrencyFinal_1.34_charts-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1580,7 +1582,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Shane.CurrencyFinal-1.34-charts";
 				PRODUCT_NAME = CurrencyFinal_1.34_charts;
 				SWIFT_OBJC_BRIDGING_HEADER = "CurrencyFinal_1.34_charts/CurrencyFinal_1.34_charts-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

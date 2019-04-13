@@ -198,7 +198,8 @@
         [yVals addObject:entry];
     }
     
-    LineChartDataSet *set1 = [[LineChartDataSet alloc] initWithValues:yVals label:@""];
+//    LineChartDataSet *set1 = [[LineChartDataSet alloc] initWithValues:yVals label:@""];
+    LineChartDataSet *set1 = [[LineChartDataSet alloc] initWithEntries:yVals label:@""];
     
     
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];

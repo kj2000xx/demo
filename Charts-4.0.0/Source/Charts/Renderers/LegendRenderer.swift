@@ -12,24 +12,17 @@
 import Foundation
 import CoreGraphics
 
-#if !os(OSX)
-    import UIKit
-#endif
-
 @objc(ChartLegendRenderer)
-open class LegendRenderer: NSObject, Renderer
+open class LegendRenderer: Renderer
 {
-    @objc public let viewPortHandler: ViewPortHandler
-
     /// the legend object this renderer renders
     @objc open var legend: Legend?
 
     @objc public init(viewPortHandler: ViewPortHandler, legend: Legend?)
     {
-        self.viewPortHandler = viewPortHandler
+        super.init(viewPortHandler: viewPortHandler)
+        
         self.legend = legend
-
-        super.init()
     }
 
     /// Prepares the legend and calculates all needed forms, labels and colors.
@@ -42,23 +35,34 @@ open class LegendRenderer: NSObject, Renderer
             var entries: [LegendEntry] = []
             
             // loop for building up the colors and labels used in the legend
-            for dataSet in data
-            {                
+            for i in 0..<data.dataSetCount
+            {
+                guard let dataSet = data.getDataSetByIndex(i) else { continue }
+                
                 var clrs: [NSUIColor] = dataSet.colors
                 let entryCount = dataSet.entryCount
                 
                 // if we have a barchart with stacked bars
-                if dataSet is BarChartDataSetProtocol &&
-                    (dataSet as! BarChartDataSetProtocol).isStacked
+                if dataSet is IBarChartDataSet &&
+                    (dataSet as! IBarChartDataSet).isStacked
                 {
-                    let bds = dataSet as! BarChartDataSetProtocol
+                    let bds = dataSet as! IBarChartDataSet
                     var sLabels = bds.stackLabels
-                    
-                    for j in 0..<min(clrs.count, bds.stackSize)
+                    let minEntries = min(clrs.count, bds.stackSize)
+
+                    for j in 0..<minEntries
                     {
+                        let label: String?
+                        if (sLabels.count > 0 && minEntries > 0) {
+                            let labelIndex = j % minEntries
+                            label = sLabels.indices.contains(labelIndex) ? sLabels[labelIndex] : nil
+                        } else {
+                            label = nil
+                        }
+
                         entries.append(
                             LegendEntry(
-                                label: sLabels[j % sLabels.count],
+                                label: label,
                                 form: dataSet.form,
                                 formSize: dataSet.formSize,
                                 formLineWidth: dataSet.formLineWidth,
@@ -86,9 +90,9 @@ open class LegendRenderer: NSObject, Renderer
                         )
                     }
                 }
-                else if dataSet is PieChartDataSetProtocol
+                else if dataSet is IPieChartDataSet
                 {
-                    let pds = dataSet as! PieChartDataSetProtocol
+                    let pds = dataSet as! IPieChartDataSet
                     
                     for j in 0..<min(clrs.count, entryCount)
                     {
@@ -122,10 +126,10 @@ open class LegendRenderer: NSObject, Renderer
                         )
                     }
                 }
-                else if dataSet is CandleChartDataSetProtocol &&
-                    (dataSet as! CandleChartDataSetProtocol).decreasingColor != nil
+                else if dataSet is ICandleChartDataSet &&
+                    (dataSet as! ICandleChartDataSet).decreasingColor != nil
                 {
-                    let candleDataSet = dataSet as! CandleChartDataSetProtocol
+                    let candleDataSet = dataSet as! ICandleChartDataSet
                     
                     entries.append(
                         LegendEntry(
@@ -566,6 +570,6 @@ open class LegendRenderer: NSObject, Renderer
     /// Draws the provided label at the given position.
     @objc open func drawLabel(context: CGContext, x: CGFloat, y: CGFloat, label: String, font: NSUIFont, textColor: NSUIColor)
     {
-        context.drawText(label, at: CGPoint(x: x, y: y), align: .left, attributes: [.font: font, .foregroundColor: textColor])
+        ChartUtils.drawText(context: context, text: label, point: CGPoint(x: x, y: y), align: .left, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: textColor])
     }
 }

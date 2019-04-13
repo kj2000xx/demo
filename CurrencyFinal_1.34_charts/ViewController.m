@@ -38,6 +38,8 @@
 @property(nonatomic)YahooCurrencyRateLoader *yahooCurrencyRateLoader;
 
 @property(nonatomic)UIActivityIndicatorView *loadingView;
+
+@property(nonatomic) BOOL firstTimeAppearView;
 @end
 
 @implementation ViewController
@@ -47,6 +49,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    _yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
+    [_yahooCurrencyRateLoader loadYahooCurrency];
+
     self.talbeView.delegate = self ;
     self.talbeView.dataSource = self ;
     self.talbeView.estimatedRowHeight = 62;
@@ -60,15 +65,14 @@
     self.favorListName_Arr = [NSMutableArray new];
     self.favorListRate_Dic =[NSMutableDictionary new];
     self.collectionOptionTitleDict = [NSMutableDictionary new];
-    self.optionHeaderStr = [NSString new];
     
     self.favorListName_Arr = [self getUserFavorListName_Arr];
-    self.optionHeaderStr = [self getOptionHeaderStr];
+    self.userKeyIn_Arr = [self getUserKeyIn_Arr];
+    self.favorListRate_Dic =[self getFavoritListRate_Dic];
     
     [self setRangeForURL_str];
+    self.optionHeaderStr = [self getOptionHeaderStr];
     
-    _yahooCurrencyRateLoader = [YahooCurrencyRateLoader new];
-    [_yahooCurrencyRateLoader loadYahooCurrency];
     
     [self setNavigationBar];
     
@@ -91,9 +95,7 @@
     //        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
     //        NSLog(@"%@",path);
     
-    //save Default's Frame 紀錄最原始的tableView、collectionView的frame與座標，供之後點擊時的縮放動畫使用
-    self.tableViewFrameDefault = self.talbeView.frame;
-    self.collectionViewCenterDefault = self.collectionView.center;
+ 
     
     //用來比對英文國名撈出中文國名
     self.currencyList_Dic =@{
@@ -110,10 +112,10 @@
                              };
     
     //更新歷史匯率
-    [self startLoadingView];
-    NSArray *countryNameArr = [[NSArray alloc] initWithArray:self.favorListName_Arr];
+        NSArray *countryNameArr = [[NSArray alloc] initWithArray:self.favorListName_Arr];
     [_yahooCurrencyRateLoader loadYahooHistoricalDataNew:countryNameArr keyInCountry:nil];
-    
+
+    self.firstTimeAppearView = true;
     
     //add notification
     [self addNotifiCation];
@@ -126,6 +128,22 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"addCell" object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"reloadCollectionCell" object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"renewOptionHeader" object:nil];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    //save Default's Frame 紀錄最原始的tableView、collectionView的frame與座標，供之後點擊時的縮放動畫使用
+    self.tableViewFrameDefault = self.talbeView.frame;
+    self.collectionViewCenterDefault = self.collectionView.center;
+    
+    if (self.firstTimeAppearView) {
+        [self creatLoadingView];
+        [self startLoadingView];
+        _firstTimeAppearView = false;
+    }
+    
+    [self.talbeView reloadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -143,8 +161,6 @@
     transition.subtype = kCATransitionFromLeft;
     transition.delegate = self;
     [self.navigationController.view.layer addAnimation:transition forKey:nil];
-    
-    
 }
 
 //更改uiimage比例
@@ -172,16 +188,13 @@
 
 
 #pragma mark Indicator startAnimating & stopAnimating
--(void)creatLondingView{
+-(void)creatLoadingView{
     //loading圖示
     _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.collectionView setNeedsLayout];
     [self.collectionView layoutIfNeeded];
     
-    _loadingView.center = CGPointMake(self.collectionView.frame.size.width/2, self.collectionView.frame.size.height/2+64);
-    _loadingView.frame = CGRectMake(self.collectionView.frame.origin.x+5 , self.collectionView.frame.origin.y+5,self.collectionView.frame.size.width-10, self.collectionView.frame.size.height-10);
-    
-//    _loadingView.frame.size = CGSizeMake(self.collectionView.frame.size.width-10, self.collectionView.frame.size.height-10);
+    _loadingView.frame = CGRectMake(self.collectionView.frame.origin.x + 5 ,self.collectionView.frame.origin.y + 5,self.collectionView.frame.size.width-10, self.collectionView.frame.size.height-10);
     
     _loadingView.backgroundColor = [UIColor grayColor];
     _loadingView.layer.cornerRadius = 15;
@@ -193,10 +206,6 @@
 
 //開始loading動畫
 -(void)startLoadingView{
-    if (!_loadingView) {
-        [self creatLondingView];
-    }
-    
     [_loadingView startAnimating];
 }
 //結束loading動畫
@@ -228,8 +237,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renewOptionHeader:) name:@"renewOptionHeader" object:nil];
     //所有外幣歷史數據完成時回穿的通知，主要是要關閉loading動畫
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadCollectionView) name:@"completeLoadYhooHistoricalData" object:nil];
+    //讀取完即時匯率後刷新tableView
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadTableView) name:@"completeLoadYahooFavorListRate" object:nil];
+
 }
+
 #pragma mark Notification's selector
+-(void)reloadTableView{
+//    [self.talbeView reloadData];
+}
+
 -(void)reloadCell:(NSNotification*)notification{
     //    NSLog(@"Reload Celling");
     
@@ -330,9 +347,6 @@
     [_yahooCurrencyRateLoader loadYahooHistoricalDataNew:countryNameArr keyInCountry:nil];
 
     [self.collectionView reloadData];
-    
-    //    [_collectionView.collectionViewLayout invalidateLayout];
-    //    [_collectionView layoutSubviews];
 
 }
 
@@ -449,10 +463,11 @@
     
     //取出使用者最後點擊的幣與輸入值去轉產生其他幣的相對值
     cell.cell_userKeyInfo_arr = [userKeyInfo mutableCopy];
+    self.favorListRate_Dic = [self getFavoritListRate_Dic];
     NSString *setPrice = userKeyInfo[1];
     NSString *userRate = [self.favorListRate_Dic objectForKey:countryName];
     
-   
+    
     [cell showUserFavorList_price:setPrice rate:userRate];
     
     cell.indexName =indexPath;
@@ -644,6 +659,8 @@
         [self.view endEditing:YES];
     }
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

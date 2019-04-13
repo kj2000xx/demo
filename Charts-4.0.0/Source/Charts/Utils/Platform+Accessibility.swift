@@ -4,24 +4,24 @@ import Foundation
 
 internal func accessibilityPostLayoutChangedNotification(withElement element: Any? = nil)
 {
-    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, element)
+    UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: element)
 }
 
 internal func accessibilityPostScreenChangedNotification(withElement element: Any? = nil)
 {
-    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, element)
+    UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: element)
 }
 
 /// A simple abstraction over UIAccessibilityElement and NSAccessibilityElement.
 open class NSUIAccessibilityElement: UIAccessibilityElement
 {
-    private let containerView: UIView
+    private weak var containerView: UIView?
 
     final var isHeader: Bool = false
     {
         didSet
         {
-            accessibilityTraits = isHeader ? UIAccessibilityTraitHeader : UIAccessibilityTraitNone
+            accessibilityTraits = isHeader ? UIAccessibilityTraits.header : UIAccessibilityTraits.none
         }
     }
 
@@ -29,14 +29,14 @@ open class NSUIAccessibilityElement: UIAccessibilityElement
         {
         didSet
         {
-            accessibilityTraits = isSelected ? UIAccessibilityTraitSelected : UIAccessibilityTraitNone
+            accessibilityTraits = isSelected ? UIAccessibilityTraits.selected : UIAccessibilityTraits.none
         }
     }
 
-    override init(accessibilityContainer container: Any)
+    override public init(accessibilityContainer container: Any)
     {
         // We can force unwrap since all chart views are subclasses of UIView
-        containerView = container as! UIView
+        containerView = (container as! UIView)
         super.init(accessibilityContainer: container)
     }
 
@@ -49,6 +49,7 @@ open class NSUIAccessibilityElement: UIAccessibilityElement
 
         set
         {
+            guard let containerView = containerView else { return }
             super.accessibilityFrame = containerView.convert(newValue, to: UIScreen.main.coordinateSpace)
         }
     }
@@ -93,7 +94,7 @@ extension NSUIView
 internal func accessibilityPostLayoutChangedNotification(withElement element: Any? = nil)
 {
     guard let validElement = element else { return }
-    NSAccessibilityPostNotification(validElement, .layoutChanged)
+    NSAccessibility.post(element: validElement, notification: .layoutChanged)
 }
 
 internal func accessibilityPostScreenChangedNotification(withElement element: Any? = nil)
@@ -104,7 +105,7 @@ internal func accessibilityPostScreenChangedNotification(withElement element: An
 /// A simple abstraction over UIAccessibilityElement and NSAccessibilityElement.
 open class NSUIAccessibilityElement: NSAccessibilityElement
 {
-    private let containerView: NSView
+    private weak var containerView: NSView?
 
     final var isHeader: Bool = false
     {
@@ -144,7 +145,9 @@ open class NSUIAccessibilityElement: NSAccessibilityElement
 
         set
         {
-            let bounds = NSAccessibilityFrameInView(containerView, newValue)
+            guard let containerView = containerView else { return }
+
+            let bounds = NSAccessibility.screenRect(fromView: containerView, rect: newValue)
 
             // This works, but won't auto update if the window is resized or moved.
             // setAccessibilityFrame(bounds)
@@ -154,8 +157,8 @@ open class NSUIAccessibilityElement: NSAccessibilityElement
             // This is a slightly hacky workaround that calculates the offset and removes it from frame calculation.
             setAccessibilityFrameInParentSpace(bounds)
             let axFrame = accessibilityFrame()
-            let widthOffset = fabs(axFrame.origin.x - bounds.origin.x)
-            let heightOffset = fabs(axFrame.origin.y - bounds.origin.y)
+            let widthOffset = abs(axFrame.origin.x - bounds.origin.x)
+            let heightOffset = abs(axFrame.origin.y - bounds.origin.y)
             let rect = NSRect(x: bounds.origin.x - widthOffset,
                               y: bounds.origin.y - heightOffset,
                               width: bounds.width,
@@ -164,10 +167,10 @@ open class NSUIAccessibilityElement: NSAccessibilityElement
         }
     }
 
-    init(accessibilityContainer container: Any)
+    public init(accessibilityContainer container: Any)
     {
         // We can force unwrap since all chart views are subclasses of NSView
-        containerView = container as! NSView
+        containerView = (container as! NSView)
 
         super.init()
 
@@ -176,7 +179,7 @@ open class NSUIAccessibilityElement: NSAccessibilityElement
     }
 }
 
-/// NOTE: setAccessibilityRole(.list) is called at init. See Platform.swift.
+/// - Note: setAccessibilityRole(.list) is called at init. See Platform.swift.
 extension NSUIView: NSAccessibilityGroup
 {
     open override func accessibilityLabel() -> String?
