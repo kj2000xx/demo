@@ -114,7 +114,8 @@
     //更新歷史匯率
         NSArray *countryNameArr = [[NSArray alloc] initWithArray:self.favorListName_Arr];
     [_yahooCurrencyRateLoader loadYahooHistoricalDataNew:countryNameArr keyInCountry:nil];
-
+    
+    //app第一次顯示首頁
     self.firstTimeAppearView = true;
     
     //add notification

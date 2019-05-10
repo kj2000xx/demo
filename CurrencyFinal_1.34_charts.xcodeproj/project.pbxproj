@@ -1073,7 +1073,7 @@
 				TargetAttributes = {
 					348DBE6B1CB210FF00E483E0 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 58L8VQAFB6;
+						DevelopmentTeam = 7JXH2B26Y8;
 						LastSwiftMigration = 0940;
 					};
 				};
@@ -1449,6 +1449,7 @@
 		348DBE811CB210FF00E483E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1504,6 +1505,7 @@
 		348DBE821CB210FF00E483E0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1554,14 +1556,14 @@
 		348DBE841CB210FF00E483E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 58L8VQAFB6;
+				DEVELOPMENT_TEAM = 7JXH2B26Y8;
 				INFOPLIST_FILE = CurrencyFinal_1.34_charts/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Shane.CurrencyFinal-1.34-charts";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Shane.Currency;
 				PRODUCT_NAME = CurrencyFinal_1.34_charts;
 				SWIFT_OBJC_BRIDGING_HEADER = "CurrencyFinal_1.34_charts/CurrencyFinal_1.34_charts-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1572,14 +1574,14 @@
 		348DBE851CB210FF00E483E0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 58L8VQAFB6;
+				DEVELOPMENT_TEAM = 7JXH2B26Y8;
 				INFOPLIST_FILE = CurrencyFinal_1.34_charts/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Shane.CurrencyFinal-1.34-charts";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Shane.Currency;
 				PRODUCT_NAME = CurrencyFinal_1.34_charts;
 				SWIFT_OBJC_BRIDGING_HEADER = "CurrencyFinal_1.34_charts/CurrencyFinal_1.34_charts-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
