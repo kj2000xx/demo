@@ -32,18 +32,18 @@
 
 
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity{
-    //1.计算scrollview最后停留的范围
+    //計算scrollView最後停留的範圍
     CGRect lastRect ;
     lastRect.origin = proposedContentOffset;
     lastRect.size = self.collectionView.frame.size;
     
-    //2.取出这个范围内的所有属性
+    //取出範圍內的所有屬性
     NSArray *array = [self layoutAttributesForElementsInRect:lastRect];
     
-    //起始的x值，也即默认情况下要停下来的x值
+    //起始的x值，也是默認情況下要停下来的x值
     CGFloat startX = proposedContentOffset.x;
     
-    //3.遍历所有的属性
+    //遍歷所有的屬性
     CGFloat adjustOffsetX = MAXFLOAT;
     for (UICollectionViewLayoutAttributes *attrs in array) {
         CGFloat attrsX = CGRectGetMinX(attrs.frame);
@@ -55,7 +55,7 @@
             adjustOffsetX = attrsW - (startX - attrsX);
         }
         
-        break ;//只循环数组中第一个元素即可，所以直接break了
+        break ;//只循環數組中第一个元素，直接break
     }
     return CGPointMake(proposedContentOffset.x + adjustOffsetX, proposedContentOffset.y);
 }
