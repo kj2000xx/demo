@@ -91,9 +91,9 @@
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.editButtonItem.image = menu_img;
 
-    //show path
-    //        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
-    //        NSLog(@"%@",path);
+//    show path
+            NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+            NSLog(@"%@",path);
     
  
     

@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CurrencyFinal_1.34_charts/CustomTableViewCell.m"
-            timestampString = "578589296.294476"
+            timestampString = "580757601.467418"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
@@ -22,81 +22,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
-            timestampString = "578589296.295103"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
-            timestampString = "578589296.295994"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
-            landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CurrencyFinal_1.34_charts/ViewController.m"
-            timestampString = "578589296.296862"
+            filePath = "CurrencyFinal_1.34_charts/YahooCurrencyRateLoader.m"
+            timestampString = "580757601.467899"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
-            landmarkName = "-addCell:"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
+            landmarkName = "-loadYahooHistoricalDataNew:keyInCountry:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__26-[ViewController addCell:]_block_invoke"
-                  moduleName = "CurrencyFinal_1.34_charts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/user/Desktop/iOS/%E5%8C%AF%E7%8E%87/CurrencyFinal_1.34_charts/CurrencyFinal_1.34_charts/ViewController.m"
-                  timestampString = "576506028.832865"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "323"
-                  endingLineNumber = "323"
-                  offsetFromSymbolStart = "515">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__26-[ViewController addCell:]_block_invoke_2"
-                  moduleName = "CurrencyFinal_1.34_charts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/user/Desktop/iOS/%E5%8C%AF%E7%8E%87/CurrencyFinal_1.34_charts/CurrencyFinal_1.34_charts/ViewController.m"
-                  timestampString = "576506028.834638"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "323"
-                  endingLineNumber = "323"
-                  offsetFromSymbolStart = "29">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

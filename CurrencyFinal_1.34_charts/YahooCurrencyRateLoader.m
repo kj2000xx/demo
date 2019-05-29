@@ -233,10 +233,23 @@
                 for (int i = 0; i <= timeStamp.count-1 ; i++) {
                     NSMutableArray *temp = [NSMutableArray new];
                     temp[0] = timeStamp[i];
-                    temp[1] = close[i];
                     
+                    NSNumber *closeArrayElement = close[i];
+                    
+                    //api數據出現nil的暫時解套方法
+                    if ([closeArrayElement isEqual:[NSNull null]]) {
+                        if (i-1 < 0) {
+                            NSNumber *temperHandle = [NSNumber numberWithInt:0];
+                            temp[1] = temperHandle;
+                        }
+                        temp[1] = close[i-1];
+                        
+                    }else{
+                    temp[1] = closeArrayElement;
+                    }
                     dayAndRate[i] = temp;
                 }
+           
                 
                 NSMutableDictionary *historicalRate_Dic = [[self getHistoricalRate_Dic] mutableCopy];
                 [historicalRate_Dic setObject:dayAndRate forKey:countryName];
